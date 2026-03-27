@@ -1,0 +1,252 @@
+/* ── Reset & Base ── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --white-sq: #f0d9b5;
+  --black-sq: #b58863;
+  --dark-wood: #3d1c02;
+  --light-wood: #c8a97a;
+  --accent: #d4af37;
+  --text-dark: #1a0a00;
+  --text-light: #fff8ee;
+  --shadow: rgba(0, 0, 0, 0.5);
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Georgia', serif;
+  overflow: hidden;
+  background: #1a0a00;
+}
+
+/* ── Animated chessboard background ── */
+.board-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background-image:
+    repeating-conic-gradient(var(--black-sq) 0% 25%, var(--white-sq) 0% 50%);
+  background-size: 80px 80px;
+  opacity: 0.18;
+  animation: boardPulse 6s ease-in-out infinite;
+}
+
+@keyframes boardPulse {
+  0%, 100% { opacity: 0.18; }
+  50%       { opacity: 0.25; }
+}
+
+/* ── Calculator shell ── */
+.calculator {
+  position: relative;
+  z-index: 1;
+  width: 340px;
+  border-radius: 16px;
+  overflow: hidden;
+  background: linear-gradient(160deg, #2e1503 0%, #4a2206 60%, #2e1503 100%);
+  border: 3px solid var(--accent);
+  box-shadow:
+    0 0 0 6px var(--dark-wood),
+    0 20px 60px rgba(0,0,0,0.8),
+    inset 0 1px 0 rgba(255,255,255,0.1);
+}
+
+/* ── Header ── */
+.calc-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 20px 10px;
+  background: linear-gradient(90deg, var(--dark-wood), #5a2e0a, var(--dark-wood));
+  border-bottom: 2px solid var(--accent);
+}
+
+.calc-header h1 {
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--accent);
+  text-shadow: 0 0 10px rgba(212,175,55,0.6);
+}
+
+.calc-header .piece {
+  font-size: 1.4rem;
+  color: var(--accent);
+  text-shadow: 0 0 8px rgba(212,175,55,0.8);
+}
+
+/* ── Display ── */
+.display {
+  padding: 16px 20px 12px;
+  background: linear-gradient(180deg, #0d0500 0%, #1a0a00 100%);
+  border-bottom: 2px solid var(--dark-wood);
+  min-height: 90px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-end;
+  gap: 4px;
+  position: relative;
+}
+
+.display::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-conic-gradient(rgba(255,255,255,0.015) 0% 25%, transparent 0% 50%);
+  background-size: 12px 12px;
+  pointer-events: none;
+}
+
+.expression {
+  font-size: 0.85rem;
+  color: var(--light-wood);
+  opacity: 0.6;
+  min-height: 1.2em;
+  word-break: break-all;
+  text-align: right;
+}
+
+.result {
+  font-size: 2.6rem;
+  font-weight: 700;
+  color: var(--text-light);
+  word-break: break-all;
+  text-align: right;
+  text-shadow: 0 0 20px rgba(212,175,55,0.3);
+  transition: transform 0.1s ease;
+  line-height: 1.1;
+}
+
+.result.pop {
+  transform: scale(1.06);
+}
+
+/* ── Button grid ── */
+.buttons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--dark-wood);
+  padding: 1px;
+}
+
+.btn {
+  position: relative;
+  border: none;
+  cursor: pointer;
+  font-family: 'Georgia', serif;
+  font-size: 1.3rem;
+  font-weight: 600;
+  padding: 0;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: filter 0.1s, transform 0.1s;
+  outline: none;
+  overflow: hidden;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Chess-square alternating pattern on buttons */
+.btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.15s;
+  background: rgba(255,255,255,0.12);
+}
+
+.btn:hover::before  { opacity: 1; }
+.btn:active::before { opacity: 0; }
+
+.btn:active {
+  transform: scale(0.93);
+  filter: brightness(0.85);
+}
+
+/* Number buttons — white squares */
+.btn-number {
+  background: var(--white-sq);
+  color: var(--text-dark);
+}
+
+.btn-number:nth-child(odd) {
+  background: #e8cfa0;
+}
+
+/* Operator buttons — dark squares with gold */
+.btn-operator {
+  background: var(--black-sq);
+  color: var(--text-light);
+  font-size: 1.5rem;
+}
+
+/* Special (C, +/-, %) */
+.btn-special {
+  background: #6b3d1a;
+  color: var(--accent);
+  font-size: 1.1rem;
+}
+
+/* Equals — gold accent */
+.btn-equals {
+  background: linear-gradient(135deg, var(--accent) 0%, #b8922a 100%);
+  color: var(--dark-wood);
+  font-size: 1.6rem;
+  font-weight: 900;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.3);
+}
+
+.btn-equals:hover::before {
+  background: rgba(255,255,255,0.2);
+  opacity: 1;
+}
+
+/* Zero button spans 2 columns */
+.btn-zero {
+  grid-column: span 2;
+  justify-content: flex-start;
+  padding-left: 26px;
+  font-size: 1.3rem;
+}
+
+/* ── Footer ── */
+.calc-footer {
+  padding: 10px;
+  text-align: center;
+  background: linear-gradient(90deg, var(--dark-wood), #5a2e0a, var(--dark-wood));
+  border-top: 2px solid var(--accent);
+}
+
+.piece-row {
+  font-size: 1.1rem;
+  letter-spacing: 4px;
+  color: var(--light-wood);
+  opacity: 0.7;
+}
+
+/* ── Error state ── */
+.result.error {
+  font-size: 1.4rem;
+  color: #ff6b6b;
+}
+
+/* ── Responsive ── */
+@media (max-width: 380px) {
+  .calculator { width: 300px; }
+  .btn        { height: 62px; font-size: 1.1rem; }
+  .result     { font-size: 2rem; }
+}
