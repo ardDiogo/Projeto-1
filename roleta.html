@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Roleta da Sorte – Emagrecentro Araguari</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --radius: 0.75rem;
+      --bg: #fdf4ff;
+      --card: #ffffff;
+      --border: #e9d5ff;
+      --primary: #9333ea;
+      --primary-fg: #ffffff;
+      --muted: #f3e8ff;
+      --muted-fg: #7e22ce;
+      --foreground: #1e1b2e;
+      --shadow: 0 4px 24px rgba(147,51,234,.12);
+    }
+
+    body {
+      min-height: 100vh;
+      background: var(--bg);
+      font-family: 'Inter', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 32px 16px 48px;
+      gap: 0;
+    }
+
+    /* ── Header ── */
+    .brand {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+    .brand-tag {
+      display: inline-block;
+      background: var(--muted);
+      color: var(--muted-fg);
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      padding: 4px 14px;
+      border-radius: 999px;
+      margin-bottom: 10px;
+      border: 1px solid var(--border);
+    }
+    .brand h1 {
+      font-size: clamp(1.6rem, 5vw, 2.4rem);
+      font-weight: 900;
+      color: var(--foreground);
+      line-height: 1.1;
+      letter-spacing: -1px;
+    }
+    .brand h1 span {
+      background: linear-gradient(90deg, #9333ea, #ec4899);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .brand p {
+      margin-top: 8px;
+      color: #6b7280;
+      font-size: .9rem;
+    }
+
+    /* ── Card ── */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: calc(var(--radius) * 2);
+      box-shadow: var(--shadow);
+      padding: 32px 28px 36px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 28px;
+      width: 100%;
+      max-width: 460px;
+    }
+
+    /* ── Wheel wrapper ── */
+    .wheel-wrap {
+      position: relative;
+      width: 320px;
+      height: 320px;
+      filter: drop-shadow(0 8px 32px rgba(147,51,234,.22));
+    }
+
+    canvas#wheel {
+      border-radius: 50%;
+      display: block;
+    }
+
+    /* pointer */
+    .pointer {
+      position: absolute;
+      top: -18px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 14px solid transparent;
+      border-right: 14px solid transparent;
+      border-top: 30px solid #9333ea;
+      filter: drop-shadow(0 2px 6px rgba(147,51,234,.5));
+      z-index: 10;
+    }
+
+    /* center circle */
+    .center-circle {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      background: #fff;
+      border: 4px solid #9333ea;
+      box-shadow: 0 0 0 4px rgba(147,51,234,.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      z-index: 10;
+    }
+
+    /* ── Spin button ── */
+    .btn-spin {
+      width: 100%;
+      max-width: 320px;
+      padding: 15px;
+      border: none;
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, #9333ea, #ec4899);
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: .5px;
+      cursor: pointer;
+      transition: transform .15s, filter .15s, opacity .15s;
+      box-shadow: 0 4px 18px rgba(147,51,234,.35);
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-spin::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(255,255,255,.12);
+      opacity: 0;
+      transition: opacity .15s;
+    }
+    .btn-spin:hover::after  { opacity: 1; }
+    .btn-spin:active        { transform: scale(.97); }
+    .btn-spin:disabled      { opacity: .55; cursor: not-allowed; }
+
+    /* ── Result modal ── */
+    .overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15,10,30,.55);
+      backdrop-filter: blur(4px);
+      z-index: 50;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .overlay.show { display: flex; }
+
+    .modal {
+      background: #fff;
+      border-radius: calc(var(--radius) * 2);
+      border: 1px solid var(--border);
+      box-shadow: 0 24px 64px rgba(147,51,234,.25);
+      padding: 40px 32px 36px;
+      text-align: center;
+      max-width: 380px;
+      width: 100%;
+      animation: popIn .35s cubic-bezier(.34,1.56,.64,1);
+    }
+
+    @keyframes popIn {
+      from { transform: scale(.7); opacity: 0; }
+      to   { transform: scale(1);  opacity: 1; }
+    }
+
+    .modal-icon { font-size: 3.5rem; margin-bottom: 12px; }
+    .modal h2 {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--foreground);
+      margin-bottom: 6px;
+    }
+    .modal-prize {
+      font-size: 1.5rem;
+      font-weight: 900;
+      background: linear-gradient(90deg, #9333ea, #ec4899);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 20px;
+    }
+    .modal p.sub {
+      font-size: .85rem;
+      color: #6b7280;
+      margin-bottom: 28px;
+      line-height: 1.6;
+    }
+    .btn-close {
+      width: 100%;
+      padding: 13px;
+      border: none;
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, #9333ea, #ec4899);
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: .95rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: filter .15s;
+    }
+    .btn-close:hover { filter: brightness(1.1); }
+
+    /* ── Footer ── */
+    .disclaimer {
+      margin-top: 24px;
+      font-size: .75rem;
+      color: #9ca3af;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .disclaimer span { font-size: .85rem; }
+  </style>
+</head>
+<body>
+
+  <div class="brand">
+    <div class="brand-tag">Emagrecentro Araguari</div>
+    <h1>Roleta da <span>Sorte</span></h1>
+    <p>Gire e descubra seu prêmio especial!</p>
+  </div>
+
+  <div class="card">
+    <div class="wheel-wrap">
+      <div class="pointer"></div>
+      <canvas id="wheel" width="320" height="320"></canvas>
+      <div class="center-circle">🌸</div>
+    </div>
+
+    <button class="btn-spin" id="btnSpin">✨ Girar a Roleta</button>
+  </div>
+
+  <p class="disclaimer">
+    <span>🎲</span> As rodadas são aleatórias e cada resultado é independente.
+  </p>
+
+  <!-- Modal resultado -->
+  <div class="overlay" id="overlay">
+    <div class="modal">
+      <div class="modal-icon" id="modalIcon"></div>
+      <h2>Parabéns! Você ganhou:</h2>
+      <div class="modal-prize" id="modalPrize"></div>
+      <p class="sub" id="modalSub"></p>
+      <button class="btn-close" id="btnClose">Ótimo, obrigado!</button>
+    </div>
+  </div>
+
+<script>
+  const SEGMENTS = [
+    {
+      label:  'Procedimento\nEstético',
+      icon:   '💎',
+      color:  '#9333ea',
+      text:   '#fff',
+      prize:  'Procedimento Estético Gratuito',
+      sub:    'Apresente este resultado na recepção para resgatar seu procedimento. Sujeito à disponibilidade.',
+      mIcon:  '💎',
+    },
+    {
+      label:  'Voucher\nR$ 200',
+      icon:   '💵',
+      color:  '#ec4899',
+      text:   '#fff',
+      prize:  'Voucher de R$ 200,00',
+      sub:    'Válido para uso em qualquer serviço do Emagrecentro Araguari. Mostre este resultado na recepção.',
+      mIcon:  '💵',
+    },
+    {
+      label:  'Tente\nNovamente',
+      icon:   '🔄',
+      color:  '#d1d5db',
+      text:   '#374151',
+      prize:  'Tente Novamente',
+      sub:    'Não foi dessa vez! Mas você pode tentar a sorte de novo. Gire mais uma vez!',
+      mIcon:  '🔄',
+    },
+    {
+      label:  'Bioimpedância\nGratuita',
+      icon:   '⚡',
+      color:  '#a855f7',
+      text:   '#fff',
+      prize:  'Avaliação de Bioimpedância',
+      sub:    'Avaliação completa de composição corporal. Agende agora na recepção do Emagrecentro.',
+      mIcon:  '⚡',
+    },
+    {
+      label:  '30% de\nDesconto',
+      icon:   '🏷️',
+      color:  '#f472b6',
+      text:   '#fff',
+      prize:  '30% de Desconto',
+      sub:    'Desconto válido em qualquer pacote de tratamento. Resgate na recepção do Emagrecentro Araguari.',
+      mIcon:  '🏷️',
+    },
+  ];
+
+  const canvas  = document.getElementById('wheel');
+  const ctx     = canvas.getContext('2d');
+  const btnSpin = document.getElementById('btnSpin');
+  const overlay = document.getElementById('overlay');
+  const btnClose= document.getElementById('btnClose');
+
+  const N   = SEGMENTS.length;
+  const ARC = (2 * Math.PI) / N;
+  const R   = canvas.width / 2;
+
+  let currentAngle = 0;
+  let spinning     = false;
+
+  // ── Draw wheel ──
+  function drawWheel(angle) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    SEGMENTS.forEach((seg, i) => {
+      const start = angle + i * ARC;
+      const end   = start + ARC;
+
+      // Slice
+      ctx.beginPath();
+      ctx.moveTo(R, R);
+      ctx.arc(R, R, R, start, end);
+      ctx.closePath();
+      ctx.fillStyle = seg.color;
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(255,255,255,.35)';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // Text
+      ctx.save();
+      ctx.translate(R, R);
+      ctx.rotate(start + ARC / 2);
+      ctx.textAlign = 'right';
+      ctx.fillStyle = seg.text;
+
+      // Icon
+      ctx.font = '20px serif';
+      ctx.fillText(seg.icon, R - 14, 6);
+
+      // Label (multi-line)
+      ctx.font = `bold ${N > 6 ? 10 : 11}px Inter, sans-serif`;
+      const lines = seg.label.split('\n');
+      const lineH = 14;
+      const startY = -(lines.length - 1) * lineH / 2 + 18;
+      lines.forEach((line, li) => {
+        ctx.fillText(line, R - 44, startY + li * lineH);
+      });
+
+      ctx.restore();
+    });
+
+    // Outer ring
+    ctx.beginPath();
+    ctx.arc(R, R, R - 1, 0, 2 * Math.PI);
+    ctx.strokeStyle = '#9333ea';
+    ctx.lineWidth = 4;
+    ctx.stroke();
+  }
+
+  drawWheel(currentAngle);
+
+  // ── Spin ──
+  function spin() {
+    if (spinning) return;
+    spinning = true;
+    btnSpin.disabled = true;
+
+    // Weighted: "Tente Novamente" (index 2) has lower chance
+    const weights = [22, 18, 10, 20, 30]; // soma 100
+    const rand = Math.random() * 100;
+    let acc = 0, target = 0;
+    for (let i = 0; i < weights.length; i++) {
+      acc += weights[i];
+      if (rand < acc) { target = i; break; }
+    }
+
+    // Angle to land on target segment (pointer at top = -π/2)
+    const segCenter  = target * ARC + ARC / 2;
+    const pointerPos = -Math.PI / 2; // topo
+    const extraSpins = (5 + Math.floor(Math.random() * 4)) * 2 * Math.PI;
+    const targetAngle = pointerPos - segCenter + extraSpins;
+
+    const duration = 4000 + Math.random() * 1500;
+    const start    = performance.now();
+    const startA   = currentAngle % (2 * Math.PI);
+
+    function ease(t) {
+      // ease out cubic
+      return 1 - Math.pow(1 - t, 3);
+    }
+
+    function animate(now) {
+      const elapsed = now - start;
+      const t       = Math.min(elapsed / duration, 1);
+      currentAngle  = startA + targetAngle * ease(t);
+      drawWheel(currentAngle);
+
+      if (t < 1) {
+        requestAnimationFrame(animate);
+      } else {
+        currentAngle = currentAngle % (2 * Math.PI);
+        spinning = false;
+        showResult(target);
+      }
+    }
+
+    requestAnimationFrame(animate);
+  }
+
+  function showResult(idx) {
+    const seg = SEGMENTS[idx];
+    document.getElementById('modalIcon').textContent  = seg.mIcon;
+    document.getElementById('modalPrize').textContent = seg.prize;
+    document.getElementById('modalSub').textContent   = seg.sub;
+    overlay.classList.add('show');
+  }
+
+  btnSpin.addEventListener('click', spin);
+
+  btnClose.addEventListener('click', () => {
+    overlay.classList.remove('show');
+    btnSpin.disabled = false;
+  });
+</script>
+</body>
+</html>
