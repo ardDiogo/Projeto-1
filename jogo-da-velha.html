@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jogo da Velha</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #0f0f1a;
+      font-family: 'Segoe UI', sans-serif;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      background: linear-gradient(90deg, #5b9cf6, #f472b6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Status */
+    .status {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #ccc;
+      min-height: 1.6em;
+      text-align: center;
+      transition: color .3s;
+    }
+    .status.x   { color: #5b9cf6; }
+    .status.o   { color: #f472b6; }
+    .status.win { font-size: 1.4rem; }
+
+    /* Tabuleiro */
+    .board {
+      display: grid;
+      grid-template-columns: repeat(3, 110px);
+      grid-template-rows:    repeat(3, 110px);
+      gap: 10px;
+    }
+
+    .cell {
+      background: #1e1e2e;
+      border-radius: 12px;
+      border: 2px solid #2e2e4e;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      font-weight: 900;
+      cursor: pointer;
+      transition: background .15s, border-color .15s, transform .1s;
+      user-select: none;
+    }
+
+    .cell:hover:not(.taken) {
+      background: #2a2a40;
+      border-color: #444470;
+      transform: scale(1.05);
+    }
+
+    .cell.x {
+      color: #5b9cf6;
+      text-shadow: 0 0 18px rgba(91,156,246,0.7);
+      border-color: #3a6cd4;
+      cursor: default;
+    }
+
+    .cell.o {
+      color: #f472b6;
+      text-shadow: 0 0 18px rgba(244,114,182,0.7);
+      border-color: #d454a0;
+      cursor: default;
+    }
+
+    .cell.taken { cursor: default; }
+
+    .cell.winner {
+      animation: glow .6s ease-in-out infinite alternate;
+    }
+
+    .cell.winner.x { animation-name: glowX; }
+    .cell.winner.o { animation-name: glowO; }
+
+    @keyframes glowX {
+      from { background: #1a2a4a; box-shadow: 0 0 10px rgba(91,156,246,.4); }
+      to   { background: #1e3460; box-shadow: 0 0 24px rgba(91,156,246,.9); }
+    }
+    @keyframes glowO {
+      from { background: #4a1a30; box-shadow: 0 0 10px rgba(244,114,182,.4); }
+      to   { background: #601e40; box-shadow: 0 0 24px rgba(244,114,182,.9); }
+    }
+
+    /* Botão reiniciar */
+    .btn-restart {
+      padding: 12px 36px;
+      border: none;
+      border-radius: 50px;
+      background: linear-gradient(90deg, #5b9cf6, #f472b6);
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: transform .15s, filter .15s;
+      box-shadow: 0 4px 20px rgba(244,114,182,.3);
+    }
+
+    .btn-restart:hover  { transform: scale(1.06); filter: brightness(1.1); }
+    .btn-restart:active { transform: scale(.96); }
+
+    /* Placar */
+    .scoreboard {
+      display: flex;
+      gap: 32px;
+    }
+
+    .score-item {
+      text-align: center;
+      background: #1e1e2e;
+      border-radius: 12px;
+      padding: 10px 24px;
+      border: 2px solid #2e2e4e;
+    }
+
+    .score-label {
+      font-size: .75rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .score-item.x .score-label { color: #5b9cf6; }
+    .score-item.o .score-label { color: #f472b6; }
+    .score-item.tie .score-label { color: #888; }
+
+    .score-value {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Jogo da Velha</h1>
+
+  <div class="scoreboard">
+    <div class="score-item x">
+      <div class="score-label">X — Azul</div>
+      <div class="score-value" id="scoreX">0</div>
+    </div>
+    <div class="score-item tie">
+      <div class="score-label">Empate</div>
+      <div class="score-value" id="scoreTie">0</div>
+    </div>
+    <div class="score-item o">
+      <div class="score-label">O — Rosa</div>
+      <div class="score-value" id="scoreO">0</div>
+    </div>
+  </div>
+
+  <div class="status x" id="status">Vez de X</div>
+
+  <div class="board" id="board">
+    <div class="cell" data-i="0"></div>
+    <div class="cell" data-i="1"></div>
+    <div class="cell" data-i="2"></div>
+    <div class="cell" data-i="3"></div>
+    <div class="cell" data-i="4"></div>
+    <div class="cell" data-i="5"></div>
+    <div class="cell" data-i="6"></div>
+    <div class="cell" data-i="7"></div>
+    <div class="cell" data-i="8"></div>
+  </div>
+
+  <button class="btn-restart" id="btnRestart">Reiniciar</button>
+
+<script>
+  const cells   = document.querySelectorAll('.cell');
+  const status  = document.getElementById('status');
+  const btnR    = document.getElementById('btnRestart');
+  const sX      = document.getElementById('scoreX');
+  const sO      = document.getElementById('scoreO');
+  const sTie    = document.getElementById('scoreTie');
+
+  const WINS = [
+    [0,1,2],[3,4,5],[6,7,8], // linhas
+    [0,3,6],[1,4,7],[2,5,8], // colunas
+    [0,4,8],[2,4,6]          // diagonais
+  ];
+
+  let board, current, over, scores = { X: 0, O: 0, tie: 0 };
+
+  function init() {
+    board   = Array(9).fill(null);
+    current = 'X';
+    over    = false;
+    cells.forEach(c => {
+      c.textContent = '';
+      c.className   = 'cell';
+    });
+    setStatus(`Vez de ${current}`, current.toLowerCase());
+  }
+
+  function setStatus(text, cls = '') {
+    status.textContent = text;
+    status.className   = 'status ' + cls;
+  }
+
+  function checkWin() {
+    for (const [a, b, c] of WINS) {
+      if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+        return [a, b, c];
+      }
+    }
+    return null;
+  }
+
+  function handleClick(e) {
+    const cell = e.target.closest('.cell');
+    if (!cell || over) return;
+    const i = +cell.dataset.i;
+    if (board[i]) return;
+
+    board[i] = current;
+    cell.textContent = current;
+    cell.classList.add(current.toLowerCase(), 'taken');
+
+    const win = checkWin();
+    if (win) {
+      over = true;
+      win.forEach(idx => cells[idx].classList.add('winner'));
+      scores[current]++;
+      updateScores();
+      setStatus(`${current} venceu! 🎉`, 'win ' + current.toLowerCase());
+      return;
+    }
+
+    if (board.every(Boolean)) {
+      over = true;
+      scores.tie++;
+      updateScores();
+      setStatus('Empate! 🤝', 'win');
+      return;
+    }
+
+    current = current === 'X' ? 'O' : 'X';
+    setStatus(`Vez de ${current}`, current.toLowerCase());
+  }
+
+  function updateScores() {
+    sX.textContent   = scores.X;
+    sO.textContent   = scores.O;
+    sTie.textContent = scores.tie;
+  }
+
+  document.getElementById('board').addEventListener('click', handleClick);
+  btnR.addEventListener('click', init);
+
+  init();
+</script>
+</body>
+</html>
