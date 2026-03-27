@@ -4,59 +4,293 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Calculadora Xadrez</title>
-  <link rel="stylesheet" href="style.css" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --white-sq: #f0d9b5;
+      --black-sq: #b58863;
+      --dark-wood: #3d1c02;
+      --accent:    #d4af37;
+      --text-dark: #1a0a00;
+      --text-light: #fff8ee;
+      --light-wood: #c8a97a;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #1a0a00;
+      font-family: Georgia, serif;
+      overflow: hidden;
+    }
+
+    /* Tabuleiro animado no fundo */
+    .board-bg {
+      position: fixed;
+      inset: 0;
+      background-image: repeating-conic-gradient(
+        var(--black-sq) 0% 25%, var(--white-sq) 0% 50%
+      );
+      background-size: 80px 80px;
+      opacity: 0.18;
+      animation: pulse 6s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:.18} 50%{opacity:.28} }
+
+    /* Calculadora */
+    .calc {
+      position: relative;
+      z-index: 1;
+      width: 340px;
+      border-radius: 16px;
+      overflow: hidden;
+      background: linear-gradient(160deg, #2e1503, #4a2206 60%, #2e1503);
+      border: 3px solid var(--accent);
+      box-shadow: 0 0 0 6px var(--dark-wood), 0 24px 64px rgba(0,0,0,.85);
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 14px 20px 10px;
+      background: linear-gradient(90deg, var(--dark-wood), #5a2e0a, var(--dark-wood));
+      border-bottom: 2px solid var(--accent);
+    }
+    .header h1 {
+      font-size: .95rem;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--accent);
+      text-shadow: 0 0 12px rgba(212,175,55,.6);
+    }
+    .header .piece { font-size: 1.4rem; color: var(--accent); }
+
+    /* Display */
+    .display {
+      min-height: 96px;
+      padding: 16px 20px 12px;
+      background: #0d0500;
+      border-bottom: 2px solid var(--dark-wood);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      justify-content: flex-end;
+      gap: 4px;
+    }
+    .expr {
+      font-size: .82rem;
+      color: var(--light-wood);
+      opacity: .55;
+      min-height: 1.1em;
+      word-break: break-all;
+    }
+    .result {
+      font-size: 2.6rem;
+      font-weight: 700;
+      color: var(--text-light);
+      word-break: break-all;
+      text-shadow: 0 0 20px rgba(212,175,55,.25);
+      transition: transform .1s;
+      line-height: 1.1;
+    }
+    .result.pop  { transform: scale(1.07); }
+    .result.err  { font-size: 1.4rem; color: #ff6b6b; }
+
+    /* Botões */
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--dark-wood);
+    }
+
+    .btn {
+      border: none;
+      cursor: pointer;
+      font-family: Georgia, serif;
+      font-size: 1.3rem;
+      font-weight: 600;
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: filter .1s, transform .1s;
+      outline: none;
+      user-select: none;
+      position: relative;
+      overflow: hidden;
+    }
+    .btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(255,255,255,.13);
+      opacity: 0;
+      transition: opacity .15s;
+    }
+    .btn:hover::after  { opacity: 1; }
+    .btn:active { transform: scale(.92); filter: brightness(.82); }
+
+    .btn-num  { background: var(--white-sq);  color: var(--text-dark); }
+    .btn-num:nth-child(odd) { background: #e8cfa0; }
+    .btn-op   { background: var(--black-sq);  color: var(--text-light); font-size: 1.5rem; }
+    .btn-spec { background: #6b3d1a;           color: var(--accent);    font-size: 1.1rem; }
+    .btn-eq   {
+      background: linear-gradient(135deg, var(--accent), #b8922a);
+      color: var(--dark-wood);
+      font-size: 1.6rem;
+      font-weight: 900;
+    }
+    .btn-zero { grid-column: span 2; justify-content: flex-start; padding-left: 26px; }
+
+    /* Footer */
+    .footer {
+      padding: 10px;
+      text-align: center;
+      background: linear-gradient(90deg, var(--dark-wood), #5a2e0a, var(--dark-wood));
+      border-top: 2px solid var(--accent);
+      letter-spacing: 5px;
+      font-size: 1.1rem;
+      color: var(--light-wood);
+      opacity: .75;
+    }
+  </style>
 </head>
 <body>
-  <div class="board-bg"></div>
 
-  <div class="calculator">
-    <div class="calc-header">
-      <span class="piece">♛</span>
-      <h1>Calculadora Xadrez</h1>
-      <span class="piece">♚</span>
-    </div>
+<div class="board-bg"></div>
 
-    <div class="display">
-      <div class="expression" id="expression"></div>
-      <div class="result" id="result">0</div>
-    </div>
-
-    <div class="buttons">
-      <!-- Row 1 -->
-      <button class="btn btn-special" data-action="clear">C</button>
-      <button class="btn btn-special" data-action="toggle-sign">+/−</button>
-      <button class="btn btn-special" data-action="percent">%</button>
-      <button class="btn btn-operator" data-value="÷">÷</button>
-
-      <!-- Row 2 -->
-      <button class="btn btn-number" data-value="7">7</button>
-      <button class="btn btn-number" data-value="8">8</button>
-      <button class="btn btn-number" data-value="9">9</button>
-      <button class="btn btn-operator" data-value="×">×</button>
-
-      <!-- Row 3 -->
-      <button class="btn btn-number" data-value="4">4</button>
-      <button class="btn btn-number" data-value="5">5</button>
-      <button class="btn btn-number" data-value="6">6</button>
-      <button class="btn btn-operator" data-value="−">−</button>
-
-      <!-- Row 4 -->
-      <button class="btn btn-number" data-value="1">1</button>
-      <button class="btn btn-number" data-value="2">2</button>
-      <button class="btn btn-number" data-value="3">3</button>
-      <button class="btn btn-operator" data-value="+">+</button>
-
-      <!-- Row 5 -->
-      <button class="btn btn-number btn-zero" data-value="0">0</button>
-      <button class="btn btn-number" data-value=".">.</button>
-      <button class="btn btn-equals" data-action="equals">=</button>
-    </div>
-
-    <div class="calc-footer">
-      <span class="piece-row">♜ ♞ ♝ ♛ ♚ ♝ ♞ ♜</span>
-    </div>
+<div class="calc">
+  <div class="header">
+    <span class="piece">♛</span>
+    <h1>Calculadora Xadrez</h1>
+    <span class="piece">♚</span>
   </div>
 
-  <script src="script.js"></script>
+  <div class="display">
+    <div class="expr"  id="expr"></div>
+    <div class="result" id="result">0</div>
+  </div>
+
+  <div class="buttons">
+    <button class="btn btn-spec" id="btnC">C</button>
+    <button class="btn btn-spec" id="btnSign">+/−</button>
+    <button class="btn btn-spec" id="btnPct">%</button>
+    <button class="btn btn-op"   data-op="÷">÷</button>
+
+    <button class="btn btn-num" data-n="7">7</button>
+    <button class="btn btn-num" data-n="8">8</button>
+    <button class="btn btn-num" data-n="9">9</button>
+    <button class="btn btn-op"  data-op="×">×</button>
+
+    <button class="btn btn-num" data-n="4">4</button>
+    <button class="btn btn-num" data-n="5">5</button>
+    <button class="btn btn-num" data-n="6">6</button>
+    <button class="btn btn-op"  data-op="−">−</button>
+
+    <button class="btn btn-num" data-n="1">1</button>
+    <button class="btn btn-num" data-n="2">2</button>
+    <button class="btn btn-num" data-n="3">3</button>
+    <button class="btn btn-op"  data-op="+">+</button>
+
+    <button class="btn btn-num btn-zero" data-n="0">0</button>
+    <button class="btn btn-num" data-n=".">.</button>
+    <button class="btn btn-eq"  id="btnEq">=</button>
+  </div>
+
+  <div class="footer">♜ ♞ ♝ ♛ ♚ ♝ ♞ ♜</div>
+</div>
+
+<script>
+  const elResult = document.getElementById('result');
+  const elExpr   = document.getElementById('expr');
+
+  let cur = '0', prev = '', op = null, justEval = false, justOp = false, lastExpr = '';
+
+  function show(animate) {
+    elResult.textContent = cur;
+    elResult.classList.remove('err');
+    if (animate) {
+      elResult.classList.remove('pop');
+      void elResult.offsetWidth;
+      elResult.classList.add('pop');
+      setTimeout(() => elResult.classList.remove('pop'), 150);
+    }
+  }
+
+  function updateExpr() {
+    if (justEval)       elExpr.textContent = lastExpr + ' =';
+    else if (op && !justOp) elExpr.textContent = prev + ' ' + op;
+    else                elExpr.textContent = '';
+  }
+
+  function digit(d) {
+    if (justEval) { cur = d; prev = ''; op = null; justEval = false; }
+    else if (justOp) { cur = d; justOp = false; }
+    else cur = cur === '0' ? d : cur + d;
+    show(); updateExpr();
+  }
+
+  function dot() {
+    if (justEval || justOp) { cur = '0.'; justEval = justOp = false; show(); return; }
+    if (!cur.includes('.')) { cur += '.'; show(); }
+  }
+
+  function setOp(o) {
+    if (op && !justOp) calc(false);
+    prev = cur; op = o; justOp = true; justEval = false;
+    updateExpr();
+  }
+
+  function calc(animate = true) {
+    if (!op || justOp) return;
+    const a = parseFloat(prev), b = parseFloat(cur);
+    let r;
+    if (op === '÷' && b === 0) { elResult.textContent = 'Erro ÷ 0'; elResult.classList.add('err'); elExpr.textContent = ''; reset(); return; }
+    switch (op) {
+      case '+': r = a + b; break;
+      case '−': r = a - b; break;
+      case '×': r = a * b; break;
+      case '÷': r = a / b; break;
+    }
+    r = parseFloat(r.toPrecision(12));
+    lastExpr = prev + ' ' + op + ' ' + cur;
+    cur = String(r); prev = ''; op = null; justEval = true; justOp = false;
+    updateExpr(); show(animate);
+  }
+
+  function reset() { cur = '0'; prev = ''; op = null; justEval = justOp = false; lastExpr = ''; }
+
+  document.getElementById('btnC').onclick    = () => { reset(); elExpr.textContent = ''; show(); };
+  document.getElementById('btnSign').onclick = () => { if(cur!=='0'){ cur = cur.startsWith('-') ? cur.slice(1) : '-'+cur; show(); } };
+  document.getElementById('btnPct').onclick  = () => { cur = String(parseFloat(cur)/100); justEval=false; show(); updateExpr(); };
+  document.getElementById('btnEq').onclick   = () => calc();
+
+  document.querySelectorAll('[data-n]').forEach(b => b.onclick = () => b.dataset.n === '.' ? dot() : digit(b.dataset.n));
+  document.querySelectorAll('[data-op]').forEach(b => b.onclick = () => setOp(b.dataset.op));
+
+  document.addEventListener('keydown', e => {
+    if (e.key >= '0' && e.key <= '9') return digit(e.key);
+    if (e.key === '.')       return dot();
+    if (e.key === '+')       return setOp('+');
+    if (e.key === '-')       return setOp('−');
+    if (e.key === '*')       return setOp('×');
+    if (e.key === '/') { e.preventDefault(); return setOp('÷'); }
+    if (e.key === 'Enter' || e.key === '=') return calc();
+    if (e.key === 'Escape')  { reset(); elExpr.textContent=''; show(); }
+    if (e.key === '%')       { cur=String(parseFloat(cur)/100); show(); updateExpr(); }
+    if (e.key === 'Backspace') {
+      if (justEval) return;
+      cur = (cur.length <= 1 || (cur.length===2 && cur[0]==='-')) ? '0' : cur.slice(0,-1);
+      show(); updateExpr();
+    }
+  });
+</script>
 </body>
 </html>
