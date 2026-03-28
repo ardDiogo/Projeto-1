@@ -1,0 +1,561 @@
+<!-- ═══════════════════════════════════════════
+     EMAGRECENTRO ARAGUARI — Home Page
+     Cole este código no widget HTML do Elementor
+     Troque as URLs das imagens pelas suas reais
+════════════════════════════════════════════ -->
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+.ec-wrap * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+
+.ec-wrap {
+  width: 100%;
+  color: #111827;
+  background: #fff;
+}
+
+/* ── Utilitários ── */
+.ec-container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+.ec-tag {
+  display: inline-block;
+  font-size: .7rem; font-weight: 700; letter-spacing: 2px;
+  text-transform: uppercase; color: #6b7280;
+  border: 1px solid #e5e7eb; border-radius: 999px;
+  padding: 4px 14px; margin-bottom: 16px;
+}
+.ec-btn {
+  display: inline-block;
+  background: #111827; color: #fff;
+  padding: 14px 32px; border-radius: 8px;
+  font-weight: 700; font-size: .9rem;
+  text-decoration: none; letter-spacing: .5px;
+  transition: background .2s, transform .15s;
+  border: none; cursor: pointer;
+}
+.ec-btn:hover { background: #374151; transform: translateY(-1px); color: #fff; }
+.ec-btn-outline {
+  display: inline-block;
+  background: transparent; color: #111827;
+  padding: 13px 32px; border-radius: 8px;
+  font-weight: 700; font-size: .9rem;
+  text-decoration: none; letter-spacing: .5px;
+  border: 2px solid #111827;
+  transition: all .2s;
+}
+.ec-btn-outline:hover { background: #111827; color: #fff; }
+.ec-section-label {
+  font-size: .7rem; font-weight: 700; letter-spacing: 3px;
+  text-transform: uppercase; color: #9ca3af;
+  margin-bottom: 12px; display: block;
+}
+.ec-divider { border: none; border-top: 1px solid #e5e7eb; margin: 0; }
+
+/* ══════════════════════════════
+   SEÇÃO 1 — HERO
+══════════════════════════════ */
+.ec-hero {
+  padding: 80px 0 60px;
+  background: #fff;
+}
+.ec-hero-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+.ec-hero-title {
+  font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+  font-weight: 900;
+  color: #111827;
+  line-height: 1.15;
+  letter-spacing: -1px;
+  margin-bottom: 20px;
+}
+.ec-hero-sub {
+  font-size: .95rem;
+  color: #6b7280;
+  line-height: 1.8;
+  margin-bottom: 32px;
+}
+.ec-hero-video {
+  width: 100%;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 24px 64px rgba(0,0,0,.12);
+  background: #111;
+  aspect-ratio: 16/10;
+}
+.ec-hero-video video,
+.ec-hero-video iframe {
+  width: 100%; height: 100%;
+  display: block; border: none;
+  border-radius: 16px;
+}
+
+/* ══════════════════════════════
+   SEÇÃO 2 — DIFERENCIAIS
+══════════════════════════════ */
+.ec-diff {
+  padding: 72px 0;
+  background: #f9fafb;
+}
+.ec-diff-header { text-align: center; margin-bottom: 48px; }
+.ec-diff-header h2 {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 800; color: #111827;
+  letter-spacing: -0.5px;
+}
+.ec-diff-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+.ec-diff-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 28px 24px;
+  text-align: center;
+  transition: box-shadow .2s, transform .2s;
+}
+.ec-diff-card:hover {
+  box-shadow: 0 8px 32px rgba(0,0,0,.08);
+  transform: translateY(-3px);
+}
+.ec-diff-icon { font-size: 2rem; margin-bottom: 14px; }
+.ec-diff-card h3 { font-size: 1rem; font-weight: 700; color: #111827; margin-bottom: 8px; }
+.ec-diff-card p { font-size: .85rem; color: #6b7280; line-height: 1.6; }
+
+/* ══════════════════════════════
+   SEÇÃO 3 — TRATAMENTO
+══════════════════════════════ */
+.ec-tratamento {
+  padding: 80px 0;
+  background: #fff;
+}
+.ec-tratamento-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: start;
+}
+.ec-tratamento h2 {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 800; color: #111827;
+  letter-spacing: -0.5px; margin-bottom: 20px;
+}
+.ec-tratamento p {
+  font-size: .93rem; color: #6b7280;
+  line-height: 1.8; margin-bottom: 16px;
+}
+.ec-fases {
+  display: flex; flex-direction: column; gap: 16px;
+}
+.ec-fase {
+  display: flex; gap: 16px; align-items: flex-start;
+  padding: 18px; background: #f9fafb;
+  border-radius: 12px; border: 1px solid #e5e7eb;
+}
+.ec-fase-num {
+  min-width: 36px; height: 36px;
+  background: #111827; color: #fff;
+  border-radius: 50%; display: flex;
+  align-items: center; justify-content: center;
+  font-weight: 800; font-size: .85rem;
+}
+.ec-fase h4 { font-size: .9rem; font-weight: 700; color: #111827; margin-bottom: 4px; }
+.ec-fase p { font-size: .82rem; color: #6b7280; line-height: 1.5; margin: 0; }
+
+/* ══════════════════════════════
+   SEÇÃO 4 — PROCEDIMENTOS
+══════════════════════════════ */
+.ec-proc {
+  padding: 80px 0;
+  background: #f9fafb;
+}
+.ec-proc-header { margin-bottom: 40px; }
+.ec-proc-header h2 {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 800; color: #111827; letter-spacing: -0.5px;
+}
+.ec-proc-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+.ec-proc-item {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 16px 20px;
+  font-size: .88rem;
+  font-weight: 500;
+  color: #374151;
+  display: flex; align-items: center; gap: 10px;
+  transition: all .2s;
+}
+.ec-proc-item:hover {
+  border-color: #111827;
+  background: #111827; color: #fff;
+}
+.ec-proc-item::before {
+  content: '→';
+  font-size: .8rem;
+  opacity: .5;
+}
+.ec-proc-destaque {
+  grid-column: span 3;
+  background: #111827; color: #fff;
+  border-color: #111827;
+  font-weight: 600;
+  font-size: .9rem;
+}
+.ec-proc-destaque::before { content: '⭐'; }
+.ec-proc-destaque:hover { background: #374151; color: #fff; }
+
+/* ══════════════════════════════
+   SEÇÃO 5 — CLIENTES
+══════════════════════════════ */
+.ec-clientes {
+  padding: 80px 0;
+  background: #fff;
+}
+.ec-clientes-header { text-align: center; margin-bottom: 40px; }
+.ec-clientes-header h2 {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 800; color: #111827; letter-spacing: -0.5px;
+}
+.ec-clientes-header p { color: #6b7280; font-size: .93rem; margin-top: 8px; }
+.ec-galeria {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+.ec-galeria-item {
+  aspect-ratio: 3/4;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #f3f4f6;
+  position: relative;
+}
+.ec-galeria-item img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform .3s;
+  border-radius: 12px;
+}
+.ec-galeria-item:hover img { transform: scale(1.04); }
+
+/* ══════════════════════════════
+   SEÇÃO 6 — PRODUTOS
+══════════════════════════════ */
+.ec-produtos {
+  padding: 80px 0;
+  background: #f9fafb;
+}
+.ec-produtos-header { text-align: center; margin-bottom: 40px; }
+.ec-produtos-header h2 {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 800; color: #111827; letter-spacing: -0.5px;
+}
+.ec-produtos-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+.ec-produto-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  overflow: hidden;
+  transition: box-shadow .2s, transform .2s;
+}
+.ec-produto-card:hover {
+  box-shadow: 0 8px 32px rgba(0,0,0,.08);
+  transform: translateY(-3px);
+}
+.ec-produto-img {
+  width: 100%; aspect-ratio: 1;
+  background: #f3f4f6; overflow: hidden;
+}
+.ec-produto-img img {
+  width: 100%; height: 100%; object-fit: cover;
+}
+.ec-produto-info { padding: 14px 16px; }
+.ec-produto-info h4 { font-size: .88rem; font-weight: 600; color: #111827; }
+
+/* ══════════════════════════════
+   SEÇÃO 7 — ROLETA
+══════════════════════════════ */
+.ec-roleta {
+  padding: 64px 0;
+  background: linear-gradient(135deg, #111827 0%, #374151 100%);
+}
+.ec-roleta-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+}
+.ec-roleta-text span {
+  font-size: .7rem; font-weight: 700; letter-spacing: 2px;
+  text-transform: uppercase; color: #9ca3af;
+  margin-bottom: 10px; display: block;
+}
+.ec-roleta-text h2 {
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  font-weight: 800; color: #fff;
+  letter-spacing: -0.5px; margin-bottom: 12px;
+}
+.ec-roleta-text p { color: #9ca3af; font-size: .93rem; line-height: 1.7; }
+.ec-roleta-btn {
+  display: inline-block;
+  background: linear-gradient(135deg, #9333ea, #ec4899);
+  color: #fff; padding: 16px 36px;
+  border-radius: 8px; font-weight: 700;
+  font-size: .95rem; text-decoration: none;
+  white-space: nowrap;
+  transition: filter .2s, transform .15s;
+  box-shadow: 0 4px 20px rgba(147,51,234,.4);
+}
+.ec-roleta-btn:hover { filter: brightness(1.1); transform: translateY(-2px); color: #fff; }
+
+/* ══════════════════════════════
+   SEÇÃO 8 — CTA FINAL
+══════════════════════════════ */
+.ec-cta {
+  padding: 80px 0;
+  background: #fff;
+  text-align: center;
+}
+.ec-cta h2 {
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  font-weight: 900; color: #111827;
+  letter-spacing: -1px; margin-bottom: 16px;
+}
+.ec-cta p { color: #6b7280; font-size: 1rem; margin-bottom: 32px; line-height: 1.7; }
+.ec-cta-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+/* ══════════════════════════════
+   RESPONSIVO
+══════════════════════════════ */
+@media (max-width: 900px) {
+  .ec-hero-inner, .ec-tratamento-inner { grid-template-columns: 1fr; gap: 40px; }
+  .ec-diff-grid, .ec-galeria, .ec-produtos-grid { grid-template-columns: repeat(2, 1fr); }
+  .ec-proc-grid { grid-template-columns: repeat(2, 1fr); }
+  .ec-proc-destaque { grid-column: span 2; }
+  .ec-roleta-inner { flex-direction: column; text-align: center; }
+}
+@media (max-width: 540px) {
+  .ec-diff-grid, .ec-galeria, .ec-produtos-grid { grid-template-columns: 1fr 1fr; }
+  .ec-proc-grid { grid-template-columns: 1fr; }
+  .ec-proc-destaque { grid-column: span 1; }
+}
+</style>
+
+<div class="ec-wrap">
+
+  <!-- ══ HERO ══ -->
+  <section class="ec-hero">
+    <div class="ec-container">
+      <div class="ec-hero-inner">
+        <div>
+          <span class="ec-tag">Emagrecentro Araguari</span>
+          <h1 class="ec-hero-title">Conheça o Método 4 Fases e elimine até 10% do seu peso em 5 semanas!</h1>
+          <p class="ec-hero-sub">Podemos afirmar que é possível entrar em forma e conquistar o corpo dos seus sonhos, sem passar fome, em busca de saúde e bem-estar, com um acompanhamento personalizado e semanal.</p>
+          <a class="ec-btn" href="https://api.whatsapp.com/send?phone=553432422756&text=Recep%C3%A7%C3%A3o" target="_blank">Fale Conosco no WhatsApp</a>
+        </div>
+        <div class="ec-hero-video">
+          <video controls poster="">
+            <source src="https://www.emagrecentroaraguari.com.br/wp-content/uploads/2024/04/Video-4.mp4" type="video/mp4">
+          </video>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="ec-divider">
+
+  <!-- ══ DIFERENCIAIS ══ -->
+  <section class="ec-diff">
+    <div class="ec-container">
+      <div class="ec-diff-header">
+        <span class="ec-section-label">Por que nos escolher</span>
+        <h2>Resultados reais, método científico</h2>
+      </div>
+      <div class="ec-diff-grid">
+        <div class="ec-diff-card">
+          <div class="ec-diff-icon">🚫</div>
+          <h3>Sem Cirurgia</h3>
+          <p>Tratamentos não invasivos, não cirúrgicos, mas com ótimos resultados!</p>
+        </div>
+        <div class="ec-diff-card">
+          <div class="ec-diff-icon">🍽️</div>
+          <h3>Sem Passar Fome</h3>
+          <p>Metodologia cientificamente comprovada. Você não sente fome por motivos fisiológicos.</p>
+        </div>
+        <div class="ec-diff-card">
+          <div class="ec-diff-icon">💊</div>
+          <h3>Sem Medicamentos</h3>
+          <p>Tratamento totalmente natural, sem uso de medicamentos químicos.</p>
+        </div>
+        <div class="ec-diff-card">
+          <div class="ec-diff-icon">🔢</div>
+          <h3>Sem Cortar Calorias</h3>
+          <p>Nossa dieta exclusiva tem grupos de alimentos que você pode comer à vontade.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ TRATAMENTO ══ -->
+  <section class="ec-tratamento">
+    <div class="ec-container">
+      <div class="ec-tratamento-inner">
+        <div>
+          <span class="ec-section-label">Nosso método</span>
+          <h2>Método 4 Fases Emagrecentro</h2>
+          <p>Todo mundo sabe que perder peso às vezes pode não ser uma tarefa fácil. Estamos sempre procurando uma maneira rápida de perder quilos extras.</p>
+          <p>O Método das 4 Fases é um protocolo revolucionário de perda de peso exclusivo do Emagrecentro de forma 100% natural e saudável para ajudá-lo a perder peso e gordura corporal mais rápido do que qualquer outro método que você já tentou.</p>
+          <p>Com o nosso método exclusivo e monitorado de emagrecimento Científico – 4 fases, é possível perder de 5% até 10% do seu peso em apenas 5 semanas.</p>
+        </div>
+        <div class="ec-fases">
+          <div class="ec-fase">
+            <div class="ec-fase-num">1</div>
+            <div>
+              <h4>Fase 1 — Avaliação</h4>
+              <p>Avaliação completa de bioimpedância e histórico de saúde.</p>
+            </div>
+          </div>
+          <div class="ec-fase">
+            <div class="ec-fase-num">2</div>
+            <div>
+              <h4>Fase 2 — Protocolo Alimentar</h4>
+              <p>Dieta exclusiva sem passar fome, com grupos de alimentos livres.</p>
+            </div>
+          </div>
+          <div class="ec-fase">
+            <div class="ec-fase-num">3</div>
+            <div>
+              <h4>Fase 3 — Tratamentos Estéticos</h4>
+              <p>Associação de tratamentos estéticos para potencializar a perda de peso.</p>
+            </div>
+          </div>
+          <div class="ec-fase">
+            <div class="ec-fase-num">4</div>
+            <div>
+              <h4>Fase 4 — Acompanhamento Semanal</h4>
+              <p>Monitoramento e ajustes semanais para garantir os resultados.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ PROCEDIMENTOS ══ -->
+  <section class="ec-proc">
+    <div class="ec-container">
+      <div class="ec-proc-header">
+        <span class="ec-section-label">O que oferecemos</span>
+        <h2>Nossos Procedimentos</h2>
+      </div>
+      <div class="ec-proc-grid">
+        <div class="ec-proc-item">Emagrecimento – Método 4 Fases</div>
+        <div class="ec-proc-item">Emagrecimento Infantil (a partir de 7 anos)</div>
+        <div class="ec-proc-item">Enzimas</div>
+        <div class="ec-proc-item">Gordura Localizada</div>
+        <div class="ec-proc-item">Celulite</div>
+        <div class="ec-proc-item">Flacidez</div>
+        <div class="ec-proc-item">Estrias</div>
+        <div class="ec-proc-item">Pós Parto</div>
+        <div class="ec-proc-item">Diástase</div>
+        <div class="ec-proc-item">Rejuvenescimento Facial</div>
+        <div class="ec-proc-item">Botox / Microagulhamento</div>
+        <div class="ec-proc-item">Jato de Plasma / Skin Booster</div>
+        <div class="ec-proc-item">Limpeza de Pele</div>
+        <div class="ec-proc-item">Papada</div>
+        <div class="ec-proc-item">Capilar</div>
+        <div class="ec-proc-item">Microvasos</div>
+        <div class="ec-proc-item">Bumbum na Nuca (Pump-Up)</div>
+        <div class="ec-proc-item">Massagens</div>
+        <div class="ec-proc-item ec-proc-destaque">Protocolo Crio de Placas — elimina até 40% de gordura</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ CLIENTES ══ -->
+  <section class="ec-clientes">
+    <div class="ec-container">
+      <div class="ec-clientes-header">
+        <span class="ec-section-label">Resultados reais</span>
+        <h2>Nossos Clientes</h2>
+        <p>Transformações reais de pessoas reais com o Método 4 Fases.</p>
+      </div>
+      <div class="ec-galeria" id="ec-galeria-clientes">
+        <!-- Substitua os src pelas URLs reais das fotos dos seus clientes -->
+        <div class="ec-galeria-item"><img src="https://www.emagrecentroaraguari.com.br/wp-content/uploads/2024/04/Mari.png" alt="Cliente" loading="lazy"></div>
+        <div class="ec-galeria-item"><img src="https://www.emagrecentroaraguari.com.br/wp-content/uploads/2024/04/Mari.png" alt="Cliente" loading="lazy"></div>
+        <div class="ec-galeria-item"><img src="https://www.emagrecentroaraguari.com.br/wp-content/uploads/2024/04/Mari.png" alt="Cliente" loading="lazy"></div>
+        <div class="ec-galeria-item"><img src="https://www.emagrecentroaraguari.com.br/wp-content/uploads/2024/04/Mari.png" alt="Cliente" loading="lazy"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ PRODUTOS ══ -->
+  <section class="ec-produtos">
+    <div class="ec-container">
+      <div class="ec-produtos-header">
+        <span class="ec-section-label">Loja</span>
+        <h2>Nossos Produtos</h2>
+      </div>
+      <div class="ec-produtos-grid" id="ec-grid-produtos">
+        <!-- Substitua os src pelas URLs reais das fotos dos seus produtos -->
+        <div class="ec-produto-card">
+          <div class="ec-produto-img"><img src="https://www.emagrecentroaraguari.com.br/wp-content/uploads/2024/04/Mari.png" alt="Produto" loading="lazy"></div>
+          <div class="ec-produto-info"><h4>Produto 1</h4></div>
+        </div>
+        <div class="ec-produto-card">
+          <div class="ec-produto-img"><img src="https://www.emagrecentroaraguari.com.br/wp-content/uploads/2024/04/Mari.png" alt="Produto" loading="lazy"></div>
+          <div class="ec-produto-info"><h4>Produto 2</h4></div>
+        </div>
+        <div class="ec-produto-card">
+          <div class="ec-produto-img"><img src="https://www.emagrecentroaraguari.com.br/wp-content/uploads/2024/04/Mari.png" alt="Produto" loading="lazy"></div>
+          <div class="ec-produto-info"><h4>Produto 3</h4></div>
+        </div>
+        <div class="ec-produto-card">
+          <div class="ec-produto-img"><img src="https://www.emagrecentroaraguari.com.br/wp-content/uploads/2024/04/Mari.png" alt="Produto" loading="lazy"></div>
+          <div class="ec-produto-info"><h4>Produto 4</h4></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ ROLETA ══ -->
+  <section class="ec-roleta">
+    <div class="ec-container">
+      <div class="ec-roleta-inner">
+        <div class="ec-roleta-text">
+          <span>Promoção exclusiva</span>
+          <h2>Gire a Roleta da Sorte e ganhe um prêmio!</h2>
+          <p>Procedimento estético gratuito, voucher de R$ 200, avaliação de bioimpedância e muito mais. Cada pessoa pode girar uma vez!</p>
+        </div>
+        <a class="ec-roleta-btn" href="https://www.emagrecentroaraguari.com.br/roleta/" target="_blank">🎰 Girar a Roleta</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ CTA FINAL ══ -->
+  <section class="ec-cta">
+    <div class="ec-container">
+      <span class="ec-section-label">Comece hoje</span>
+      <h2>Sim, quero emagrecer de forma rápida!</h2>
+      <p>Entre em contato agora e agende sua avaliação gratuita de bioimpedância.<br>Atendimento de Segunda a Sexta 08h–20h | Sábado 08h–12h</p>
+      <div class="ec-cta-btns">
+        <a class="ec-btn" href="https://api.whatsapp.com/send?phone=553432422756&text=Recep%C3%A7%C3%A3o" target="_blank">💬 Fale pelo WhatsApp</a>
+        <a class="ec-btn-outline" href="tel:+553432422756">(34) 3242-2756</a>
+      </div>
+    </div>
+  </section>
+
+</div>
