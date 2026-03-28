@@ -5,14 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Roleta da Sorte – Emagrecentro Araguari</title>
 
-  <!--
-  ═══════════════════════════════════════════════════════════
-   CONFIGURAÇÃO  ←  edite só este bloco
-  ═══════════════════════════════════════════════════════════
-  1. Suba o arquivo salvar-lead.php no seu WordPress
-  2. Atualize PHP_URL com o endereço correto
-  3. A SECRET_KEY deve ser igual à do arquivo PHP
-  ═══════════════════════════════════════════════════════════ -->
   <script>
     const CONFIG = {
       PHP_URL:    'https://www.emagrecentroaraguari.com.br/wp-admin/admin-ajax.php?action=salvar_lead',
@@ -26,15 +18,15 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --purple: #9333ea;
-      --pink:   #ec4899;
-      --bg:     #fdf4ff;
-      --card:   #ffffff;
-      --border: #e9d5ff;
-      --fg:     #1e1b2e;
-      --muted:  #6b7280;
-      --error:  #ef4444;
-      --radius: 12px;
+      --blue:    #3b82f6;
+      --blue-lt: #dbeafe;
+      --bg:      #f8fafc;
+      --card:    #ffffff;
+      --border:  #e2e8f0;
+      --fg:      #0f172a;
+      --muted:   #64748b;
+      --error:   #ef4444;
+      --radius:  12px;
     }
 
     body {
@@ -44,84 +36,80 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 32px 16px 48px;
-      gap: 24px;
+      padding: 36px 16px 56px;
+      gap: 28px;
     }
 
     /* ── Brand ── */
     .brand { text-align: center; }
     .brand-tag {
       display: inline-block;
-      background: #f3e8ff;
-      color: #7e22ce;
-      font-size: .7rem;
+      background: var(--blue-lt);
+      color: #1d4ed8;
+      font-size: .68rem;
       font-weight: 700;
       letter-spacing: 2.5px;
       text-transform: uppercase;
       padding: 4px 14px;
       border-radius: 999px;
-      margin-bottom: 10px;
-      border: 1px solid var(--border);
+      margin-bottom: 12px;
+      border: 1px solid #bfdbfe;
     }
     .brand h1 {
-      font-size: clamp(1.5rem, 5vw, 2.2rem);
+      font-size: clamp(1.6rem, 5vw, 2.2rem);
       font-weight: 900;
       color: var(--fg);
       line-height: 1.1;
       letter-spacing: -1px;
     }
-    .brand h1 span {
-      background: linear-gradient(90deg, var(--purple), var(--pink));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
+    .brand h1 span { color: var(--blue); }
     .brand p { margin-top: 8px; color: var(--muted); font-size: .88rem; }
 
     /* ── Card ── */
     .card {
       background: var(--card);
       border: 1px solid var(--border);
-      border-radius: calc(var(--radius) * 2);
-      box-shadow: 0 4px 24px rgba(147,51,234,.1);
+      border-radius: 20px;
+      box-shadow: 0 4px 24px rgba(59,130,246,.08);
       padding: 32px 28px;
       width: 100%;
       max-width: 460px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 24px;
+      gap: 22px;
     }
 
     /* ── Steps ── */
-    .step { width: 100%; display: none; flex-direction: column; align-items: center; gap: 20px; }
+    .step { width: 100%; display: none; flex-direction: column; align-items: center; gap: 18px; }
     .step.active { display: flex; }
 
     /* ── Form ── */
     .form-header { text-align: center; }
-    .form-header h2 { font-size: 1.2rem; font-weight: 800; color: var(--fg); }
-    .form-header p  { font-size: .85rem; color: var(--muted); margin-top: 4px; }
+    .form-header h2 { font-size: 1.15rem; font-weight: 800; color: var(--fg); }
+    .form-header p  { font-size: .84rem; color: var(--muted); margin-top: 5px; line-height: 1.5; }
 
     .field { width: 100%; display: flex; flex-direction: column; gap: 6px; }
-    .field label { font-size: .82rem; font-weight: 600; color: var(--fg); }
+    .field label { font-size: .81rem; font-weight: 600; color: var(--fg); }
 
     .field input {
       width: 100%;
       padding: 11px 14px;
-      border: 1.5px solid #d1d5db;
+      border: 1.5px solid #cbd5e1;
       border-radius: var(--radius);
       font-family: 'Inter', sans-serif;
-      font-size: .95rem;
+      font-size: .94rem;
       color: var(--fg);
       background: #fff;
       outline: none;
       transition: border-color .2s, box-shadow .2s;
     }
     .field input:focus {
-      border-color: var(--purple);
-      box-shadow: 0 0 0 3px rgba(147,51,234,.12);
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(59,130,246,.12);
     }
     .field input.err { border-color: var(--error); }
-    .field .hint { font-size: .75rem; color: var(--error); display: none; }
+    .field .hint { font-size: .74rem; color: var(--error); display: none; }
     .field.has-err .hint { display: block; }
 
     /* ── Buttons ── */
@@ -130,49 +118,50 @@
       padding: 13px;
       border: none;
       border-radius: var(--radius);
-      background: linear-gradient(135deg, var(--purple), var(--pink));
+      background: var(--blue);
       color: #fff;
       font-family: 'Inter', sans-serif;
       font-size: .95rem;
       font-weight: 700;
       cursor: pointer;
-      transition: transform .15s, filter .15s, opacity .15s;
-      box-shadow: 0 4px 18px rgba(147,51,234,.3);
+      transition: background .15s, transform .15s, opacity .15s;
+      box-shadow: 0 3px 14px rgba(59,130,246,.28);
     }
-    .btn:hover   { filter: brightness(1.08); }
+    .btn:hover   { background: #2563eb; }
     .btn:active  { transform: scale(.97); }
-    .btn:disabled { opacity: .5; cursor: not-allowed; }
+    .btn:disabled { opacity: .45; cursor: not-allowed; }
 
     /* ── Wheel ── */
     .wheel-wrap {
       position: relative;
       width: 300px;
       height: 300px;
-      filter: drop-shadow(0 8px 28px rgba(147,51,234,.2));
+      filter: drop-shadow(0 8px 24px rgba(59,130,246,.15));
     }
     canvas { border-radius: 50%; display: block; }
+
     .pointer {
       position: absolute;
-      top: -16px; left: 50%;
+      top: -14px; left: 50%;
       transform: translateX(-50%);
       width: 0; height: 0;
-      border-left: 13px solid transparent;
-      border-right: 13px solid transparent;
-      border-top: 28px solid var(--purple);
-      filter: drop-shadow(0 2px 4px rgba(147,51,234,.5));
+      border-left: 12px solid transparent;
+      border-right: 12px solid transparent;
+      border-top: 26px solid var(--blue);
+      filter: drop-shadow(0 2px 4px rgba(59,130,246,.4));
       z-index: 10;
     }
     .center-dot {
       position: absolute;
       top: 50%; left: 50%;
       transform: translate(-50%,-50%);
-      width: 46px; height: 46px;
+      width: 44px; height: 44px;
       border-radius: 50%;
       background: #fff;
-      border: 4px solid var(--purple);
-      box-shadow: 0 0 0 4px rgba(147,51,234,.15);
+      border: 4px solid var(--blue);
+      box-shadow: 0 0 0 4px rgba(59,130,246,.12);
       display: flex; align-items: center; justify-content: center;
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       z-index: 10;
     }
 
@@ -180,8 +169,8 @@
     .overlay {
       display: none;
       position: fixed; inset: 0;
-      background: rgba(15,10,30,.6);
-      backdrop-filter: blur(5px);
+      background: rgba(15,23,42,.55);
+      backdrop-filter: blur(6px);
       z-index: 100;
       align-items: center;
       justify-content: center;
@@ -191,39 +180,37 @@
 
     .modal {
       background: #fff;
-      border-radius: calc(var(--radius) * 2);
+      border-radius: 20px;
       border: 1px solid var(--border);
-      box-shadow: 0 24px 64px rgba(147,51,234,.25);
+      box-shadow: 0 24px 60px rgba(59,130,246,.18);
       padding: 36px 28px 32px;
       text-align: center;
       max-width: 380px;
       width: 100%;
-      animation: popIn .35s cubic-bezier(.34,1.56,.64,1);
+      animation: popIn .32s cubic-bezier(.34,1.56,.64,1);
     }
     @keyframes popIn {
-      from { transform: scale(.7); opacity: 0; }
-      to   { transform: scale(1);  opacity: 1; }
+      from { transform: scale(.72); opacity: 0; }
+      to   { transform: scale(1);   opacity: 1; }
     }
-    .modal-icon  { font-size: 3rem; margin-bottom: 10px; }
-    .modal h2    { font-size: 1.1rem; font-weight: 700; color: var(--fg); margin-bottom: 4px; }
+    .modal-icon  { font-size: 2.8rem; margin-bottom: 10px; }
+    .modal h2    { font-size: 1.05rem; font-weight: 700; color: var(--muted); margin-bottom: 4px; }
     .modal-prize {
-      font-size: 1.45rem; font-weight: 900; margin: 8px 0 4px;
-      background: linear-gradient(90deg, var(--purple), var(--pink));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      font-size: 1.5rem; font-weight: 900; margin: 6px 0 4px;
+      color: var(--blue);
     }
-    .modal-name  { font-size: .9rem; color: var(--muted); margin-bottom: 14px; }
-    .modal-sub   { font-size: .82rem; color: var(--muted); line-height: 1.6; margin-bottom: 24px; }
+    .modal-name  { font-size: .88rem; color: var(--muted); margin-bottom: 12px; }
+    .modal-sub   { font-size: .82rem; color: var(--muted); line-height: 1.65; margin-bottom: 22px; }
 
     .modal-status {
-      font-size: .8rem; font-weight: 600;
+      font-size: .79rem; font-weight: 600;
       padding: 8px 14px;
       border-radius: 8px;
       margin-bottom: 16px;
     }
-    .modal-status.sending { background: #fef9c3; color: #854d0e; }
-    .modal-status.ok      { background: #dcfce7; color: #166534; }
-    .modal-status.fail    { background: #fee2e2; color: #991b1b; }
+    .modal-status.sending { background: #eff6ff; color: #1d4ed8; }
+    .modal-status.ok      { background: #f0fdf4; color: #166534; }
+    .modal-status.fail    { background: #fef2f2; color: #991b1b; }
 
     .divider {
       width: 100%; height: 1px;
@@ -238,18 +225,19 @@
       flex-direction: column;
       align-items: center;
       gap: 12px;
+      padding: 8px 0;
     }
-    .used-msg .icon  { font-size: 3rem; }
+    .used-msg .icon  { font-size: 2.8rem; }
     .used-msg h2     { font-size: 1.1rem; font-weight: 800; color: var(--fg); }
-    .used-msg p      { font-size: .88rem; color: var(--muted); line-height: 1.6; }
+    .used-msg p      { font-size: .87rem; color: var(--muted); line-height: 1.65; }
 
     /* ── Disclaimer ── */
     .disclaimer {
-      font-size: .72rem;
-      color: #9ca3af;
+      font-size: .71rem;
+      color: #94a3b8;
       text-align: center;
       max-width: 400px;
-      line-height: 1.5;
+      line-height: 1.55;
     }
   </style>
 </head>
@@ -258,7 +246,7 @@
   <div class="brand">
     <div class="brand-tag">Emagrecentro Araguari</div>
     <h1>Roleta da <span>Sorte</span></h1>
-    <p>Preencha seus dados e gire para ganhar!</p>
+    <p>Preencha seus dados e gire para ganhar um prêmio!</p>
   </div>
 
   <div class="card">
@@ -267,7 +255,7 @@
     <div class="step active" id="step-form">
       <div class="form-header">
         <h2>Seus dados para participar</h2>
-        <p>Cada pessoa pode girar uma vez. O prêmio chegará no seu contato.</p>
+        <p>Cada dispositivo pode girar apenas uma vez.<br>O prêmio será confirmado pelo WhatsApp.</p>
       </div>
 
       <div class="field" id="f-nome">
@@ -288,7 +276,7 @@
         <span class="hint">Informe um telefone válido.</span>
       </div>
 
-      <button class="btn" id="btn-avancar">Girar a Roleta ✨</button>
+      <button class="btn" id="btn-avancar">Girar a Roleta 🎯</button>
     </div>
 
     <!-- ── STEP 2: Roleta ── -->
@@ -296,7 +284,7 @@
       <div class="wheel-wrap">
         <div class="pointer"></div>
         <canvas id="wheel" width="300" height="300"></canvas>
-        <div class="center-dot">🌸</div>
+        <div class="center-dot">🎯</div>
       </div>
       <button class="btn" id="btn-spin">✨ Girar agora!</button>
     </div>
@@ -306,8 +294,8 @@
       <div class="used-msg">
         <div class="icon">🔒</div>
         <h2>Você já participou!</h2>
-        <p>Este e-mail já foi utilizado para girar a roleta.<br>
-           Cada pessoa pode participar apenas uma vez.<br><br>
+        <p>Este dispositivo já foi utilizado para girar a roleta.<br>
+           Cada participante pode girar apenas uma vez.<br><br>
            Fale com a gente pelo WhatsApp para mais informações!</p>
       </div>
     </div>
@@ -315,7 +303,7 @@
   </div>
 
   <p class="disclaimer">
-    🎲 As rodadas são aleatórias. Cada participante pode girar apenas uma vez.
+    🎲 As rodadas são aleatórias. Cada dispositivo pode girar apenas uma vez.
     Os dados informados serão usados exclusivamente pelo Emagrecentro Araguari.
   </p>
 
@@ -323,10 +311,10 @@
   <div class="overlay" id="overlay">
     <div class="modal">
       <div class="modal-icon" id="m-icon"></div>
-      <h2>Parabéns!</h2>
+      <h2 id="m-title">Parabéns!</h2>
       <div class="modal-prize" id="m-prize"></div>
       <div class="modal-name"  id="m-name"></div>
-      <div class="divider"></div>
+      <div class="divider" id="m-divider"></div>
       <p class="modal-sub" id="m-sub"></p>
       <div class="modal-status sending" id="m-status">⏳ Registrando seu prêmio…</div>
       <button class="btn" id="btn-fechar" style="display:none">Entendi, obrigado! 🎉</button>
@@ -338,75 +326,135 @@
    PRÊMIOS
 ══════════════════════════════════ */
 const SEGMENTS = [
-  { label:'Procedimento\nEstético', icon:'💎', color:'#9333ea', text:'#fff',
-    prize:'Procedimento Estético Gratuito', mIcon:'💎',
-    sub:'Apresente este resultado na recepção do Emagrecentro Araguari para resgatar seu procedimento. Sujeito à disponibilidade de agenda.' },
-
-  { label:'Voucher\nR$ 200', icon:'💵', color:'#ec4899', text:'#fff',
-    prize:'Voucher de R$ 200,00', mIcon:'💵',
-    sub:'Válido para qualquer serviço do Emagrecentro Araguari. Apresente este resultado na recepção para resgatar.' },
-
-  { label:'Tente\nNovamente', icon:'🔄', color:'#d1d5db', text:'#374151',
-    prize:'Tente Novamente', mIcon:'🔄',
-    sub:'Não foi dessa vez, mas você pode visitar o Emagrecentro Araguari e conhecer nossos tratamentos com condições especiais!' },
-
-  { label:'Bioimpedância\nGratuita', icon:'⚡', color:'#a855f7', text:'#fff',
-    prize:'Avaliação de Bioimpedância Gratuita', mIcon:'⚡',
-    sub:'Avaliação completa de composição corporal sem custo. Agende agora pelo WhatsApp ou direto na recepção.' },
-
-  { label:'30% de\nDesconto', icon:'🏷️', color:'#f472b6', text:'#fff',
-    prize:'30% de Desconto', mIcon:'🏷️',
-    sub:'Desconto válido em qualquer pacote de tratamento do Emagrecentro Araguari. Apresente este resultado na recepção.' },
+  {
+    label: '10%\nDesconto', icon: '💸',
+    color: '#dbeafe', text: '#1e40af',
+    prize: '10% de Desconto', mIcon: '💸',
+    isTryAgain: false,
+    sub: 'Desconto de 10% válido em qualquer pacote de tratamento. Apresente este resultado na recepção do Emagrecentro Araguari.'
+  },
+  {
+    label: '20%\nDesconto', icon: '💰',
+    color: '#bfdbfe', text: '#1e3a8a',
+    prize: '20% de Desconto', mIcon: '💰',
+    isTryAgain: false,
+    sub: 'Desconto de 20% válido em qualquer pacote de tratamento. Apresente este resultado na recepção do Emagrecentro Araguari.'
+  },
+  {
+    label: 'Tente\nNovamente', icon: '🔄',
+    color: '#fee2e2', text: '#b91c1c',
+    prize: 'Tente Novamente!', mIcon: '🔄',
+    isTryAgain: true,
+    sub: 'Quase! Você tem direito a mais um giro. Clique em "Girar de novo" para tentar a sorte!'
+  },
+  {
+    label: '30%\nDesconto', icon: '🏷️',
+    color: '#93c5fd', text: '#1e3a8a',
+    prize: '30% de Desconto', mIcon: '🏷️',
+    isTryAgain: false,
+    sub: 'Desconto de 30% válido em qualquer pacote de tratamento. Apresente este resultado na recepção do Emagrecentro Araguari.'
+  },
+  {
+    label: 'Sessão\nde Lipo', icon: '💧',
+    color: '#e0f2fe', text: '#0c4a6e',
+    prize: 'Sessão de Lipo Gratuita', mIcon: '💧',
+    isTryAgain: false,
+    sub: 'Uma sessão de lipoaspiração a laser gratuita. Agende pelo WhatsApp ou direto na recepção. Sujeito à disponibilidade.'
+  },
+  {
+    label: 'Procedimento\nSurpresa', icon: '❓',
+    color: '#f1f5f9', text: '#334155',
+    prize: 'Procedimento Surpresa', mIcon: '❓',
+    isTryAgain: false,
+    sub: 'Você ganhou um procedimento surpresa exclusivo! Venha até o Emagrecentro Araguari para descobrir qual é o seu prêmio.'
+  },
+  {
+    label: 'Bioimpedância\nGratuita', icon: '⚡',
+    color: '#e2e8f0', text: '#334155',
+    prize: 'Bioimpedância Gratuita', mIcon: '⚡',
+    isTryAgain: false,
+    sub: 'Avaliação completa de composição corporal sem nenhum custo. Agende agora pelo WhatsApp ou direto na recepção.'
+  },
 ];
 
-// Pesos (soma = 100) — "Tente Novamente" tem menor chance
-const WEIGHTS = [22, 18, 10, 20, 30];
+// Pesos (soma = 100) — Tente Novamente tem menor chance
+const WEIGHTS = [18, 15, 8, 12, 17, 15, 15];
+
+/* ══════════════════════════════════
+   DEVICE ID — 1 giro por dispositivo
+══════════════════════════════════ */
+function getDeviceId() {
+  let id = localStorage.getItem('ec_device_id');
+  if (!id) {
+    id = 'dev_' + Date.now() + '_' + Math.random().toString(36).slice(2, 9);
+    localStorage.setItem('ec_device_id', id);
+  }
+  return id;
+}
+
+function hasSpun() {
+  return localStorage.getItem('ec_roleta_spun') === 'true';
+}
+
+function markSpun() {
+  localStorage.setItem('ec_roleta_spun', 'true');
+}
 
 /* ══════════════════════════════════
    CANVAS / RODA
 ══════════════════════════════════ */
-const canvas  = document.getElementById('wheel');
-const ctx     = canvas.getContext('2d');
-const N       = SEGMENTS.length;
-const ARC     = (2 * Math.PI) / N;
-const R       = canvas.width / 2;
-let angle     = 0;
-let spinning  = false;
+const canvas = document.getElementById('wheel');
+const ctx    = canvas.getContext('2d');
+const N      = SEGMENTS.length;
+const ARC    = (2 * Math.PI) / N;
+const R      = canvas.width / 2;
+let angle    = 0;
+let spinning = false;
 
 function drawWheel(a) {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+
   SEGMENTS.forEach((seg, i) => {
     const s = a + i * ARC, e = s + ARC;
+
+    // Fatia
     ctx.beginPath();
     ctx.moveTo(R, R);
-    ctx.arc(R, R, R, s, e);
+    ctx.arc(R, R, R - 2, s, e);
     ctx.closePath();
     ctx.fillStyle = seg.color;
     ctx.fill();
-    ctx.strokeStyle = 'rgba(255,255,255,.3)';
-    ctx.lineWidth = 2;
+
+    // Borda entre fatias
+    ctx.strokeStyle = '#cbd5e1';
+    ctx.lineWidth = 1.5;
     ctx.stroke();
 
+    // Texto
     ctx.save();
     ctx.translate(R, R);
     ctx.rotate(s + ARC / 2);
     ctx.textAlign = 'right';
     ctx.fillStyle = seg.text;
 
-    ctx.font = '18px serif';
-    ctx.fillText(seg.icon, R - 12, 6);
+    // Emoji
+    ctx.font = '16px serif';
+    ctx.fillText(seg.icon, R - 10, 5);
 
-    ctx.font = 'bold 10px Inter, sans-serif';
-    seg.label.split('\n').forEach((line, li, arr) => {
-      const startY = -(arr.length - 1) * 13 / 2 + 20 + li * 13;
-      ctx.fillText(line, R - 40, startY);
+    // Label
+    ctx.font = 'bold 9.5px Inter, sans-serif';
+    const lines = seg.label.split('\n');
+    lines.forEach((line, li) => {
+      const y = -(lines.length - 1) * 12 / 2 + 18 + li * 12;
+      ctx.fillText(line, R - 34, y);
     });
     ctx.restore();
   });
 
+  // Anel externo
   ctx.beginPath();
-  ctx.arc(R, R, R - 1, 0, 2 * Math.PI);
-  ctx.strokeStyle = '#9333ea';
+  ctx.arc(R, R, R - 2, 0, 2 * Math.PI);
+  ctx.strokeStyle = '#93c5fd';
   ctx.lineWidth = 4;
   ctx.stroke();
 }
@@ -414,7 +462,14 @@ function drawWheel(a) {
 drawWheel(angle);
 
 /* ══════════════════════════════════
-   LÓGICA DE STEPS
+   VERIFICAÇÃO NA ENTRADA
+══════════════════════════════════ */
+if (hasSpun()) {
+  showStep('step-used');
+}
+
+/* ══════════════════════════════════
+   STEPS
 ══════════════════════════════════ */
 function showStep(id) {
   document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
@@ -448,14 +503,6 @@ document.getElementById('btn-avancar').addEventListener('click', () => {
 
   if (!validate(nome, email, tel)) return;
 
-  // Verifica se já usou (por e-mail, guardado no localStorage)
-  const used = JSON.parse(localStorage.getItem('emagrecentro_used') || '[]');
-  if (used.includes(email)) {
-    showStep('step-used');
-    return;
-  }
-
-  // Salva dados para usar depois
   window._userData = { nome, email, tel };
   showStep('step-wheel');
 });
@@ -469,7 +516,8 @@ document.getElementById('btn-spin').addEventListener('click', () => {
   document.getElementById('btn-spin').disabled = true;
 
   // Escolhe prêmio com pesos
-  const rand = Math.random() * WEIGHTS.reduce((a,b) => a+b, 0);
+  const total = WEIGHTS.reduce((a, b) => a + b, 0);
+  const rand  = Math.random() * total;
   let acc = 0, target = 0;
   for (let i = 0; i < WEIGHTS.length; i++) {
     acc += WEIGHTS[i];
@@ -479,7 +527,7 @@ document.getElementById('btn-spin').addEventListener('click', () => {
   const segCenter  = target * ARC + ARC / 2;
   const extraSpins = (5 + Math.floor(Math.random() * 4)) * 2 * Math.PI;
   const targetA    = -Math.PI / 2 - segCenter + extraSpins;
-  const duration   = 4200 + Math.random() * 1400;
+  const duration   = 4000 + Math.random() * 1500;
   const startA     = angle % (2 * Math.PI);
   const startT     = performance.now();
 
@@ -489,8 +537,8 @@ document.getElementById('btn-spin').addEventListener('click', () => {
     const t = Math.min((now - startT) / duration, 1);
     angle = startA + targetA * ease(t);
     drawWheel(angle);
-    if (t < 1) requestAnimationFrame(animate);
-    else        showResult(target);
+    if (t < 1) { requestAnimationFrame(animate); }
+    else        { showResult(target); }
   })(startT);
 });
 
@@ -501,21 +549,39 @@ function showResult(idx) {
   const seg  = SEGMENTS[idx];
   const user = window._userData;
 
-  document.getElementById('m-icon').textContent  = seg.mIcon;
+  document.getElementById('m-icon').textContent = seg.mIcon;
   document.getElementById('m-prize').textContent = seg.prize;
-  document.getElementById('m-name').textContent  = `para ${user.nome}`;
-  document.getElementById('m-sub').textContent   = seg.sub;
-  document.getElementById('m-status').className  = 'modal-status sending';
-  document.getElementById('m-status').textContent = '⏳ Registrando seu prêmio…';
+
+  const isTryAgain = seg.isTryAgain;
+
+  if (isTryAgain) {
+    document.getElementById('m-title').textContent = 'Quase lá!';
+    document.getElementById('m-name').textContent  = '';
+    document.getElementById('m-divider').style.display = 'none';
+    document.getElementById('m-status').style.display  = 'none';
+  } else {
+    document.getElementById('m-title').textContent = 'Parabéns!';
+    document.getElementById('m-name').textContent  = `para ${user.nome}`;
+    document.getElementById('m-divider').style.display = 'block';
+    document.getElementById('m-status').style.display  = 'block';
+    document.getElementById('m-status').className  = 'modal-status sending';
+    document.getElementById('m-status').textContent = '⏳ Registrando seu prêmio…';
+    markSpun();
+  }
+
+  document.getElementById('m-sub').textContent = seg.sub;
   document.getElementById('btn-fechar').style.display = 'none';
+  document.getElementById('btn-fechar').textContent   = isTryAgain ? 'Girar de novo! 🎯' : 'Entendi, obrigado! 🎉';
   document.getElementById('overlay').classList.add('show');
 
-  // Marca e-mail como usado
-  const used = JSON.parse(localStorage.getItem('emagrecentro_used') || '[]');
-  if (!used.includes(user.email)) used.push(user.email);
-  localStorage.setItem('emagrecentro_used', JSON.stringify(used));
+  if (isTryAgain) {
+    // Libera para girar de novo
+    document.getElementById('btn-fechar').style.display = 'block';
+    spinning = false;
+    return;
+  }
 
-  // Envia para o PHP no seu próprio servidor
+  // Envia lead para WordPress
   fetch(CONFIG.PHP_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -534,7 +600,7 @@ function showResult(idx) {
       el.textContent = '✅ Prêmio registrado! Em breve entraremos em contato.';
     } else {
       el.className   = 'modal-status fail';
-      el.textContent = '⚠️ Salvo localmente. Anote seu prêmio e apresente na recepção.';
+      el.textContent = '⚠️ Anote seu prêmio e apresente na recepção.';
     }
   })
   .catch(() => {
@@ -547,8 +613,19 @@ function showResult(idx) {
   });
 }
 
+/* ══════════════════════════════════
+   FECHAR MODAL
+══════════════════════════════════ */
 document.getElementById('btn-fechar').addEventListener('click', () => {
+  const isTryAgain = SEGMENTS.findIndex(s => s.isTryAgain) >= 0 &&
+    document.getElementById('m-title').textContent === 'Quase lá!';
+
   document.getElementById('overlay').classList.remove('show');
+
+  if (isTryAgain) {
+    // Volta para a roda para girar de novo
+    document.getElementById('btn-spin').disabled = false;
+  }
 });
 </script>
 </body>
