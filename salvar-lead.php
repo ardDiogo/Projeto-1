@@ -10,7 +10,7 @@
 // ══════════════════════════════════════════
 //  CONFIGURAÇÃO  ← edite aqui
 // ══════════════════════════════════════════
-define('OWNER_EMAIL', 'emagaraguari@gmail.com'); // seu e-mail
+define('OWNER_EMAIL', 'diogoarauujo@gmail.com'); // seu e-mail
 define('CSV_FILE',    __DIR__ . '/leads-roleta.csv');       // arquivo de backup
 define('SECRET_KEY',  'emagrecentro2025');                  // chave secreta (mesma no HTML)
 // ══════════════════════════════════════════
