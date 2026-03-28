@@ -4,22 +4,38 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Roleta da Sorte – Emagrecentro Araguari</title>
+
+  <!--
+  ═══════════════════════════════════════════════════════════
+   CONFIGURAÇÃO  ←  edite só este bloco
+  ═══════════════════════════════════════════════════════════
+  1. Crie conta gratuita em https://formspree.io
+  2. Crie um Form e copie o endpoint (ex: https://formspree.io/f/xyzabcde)
+  3. Cole abaixo em FORMSPREE_URL
+  4. Coloque o seu e-mail em OWNER_EMAIL (só para exibição no modal)
+  ═══════════════════════════════════════════════════════════ -->
+  <script>
+    const CONFIG = {
+      FORMSPREE_URL: 'https://formspree.io/f/SEU_ID_AQUI',
+      OWNER_EMAIL:   'seuemail@emagrecentroaraguari.com',
+    };
+  </script>
+
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --radius: 0.75rem;
-      --bg: #fdf4ff;
-      --card: #ffffff;
+      --purple: #9333ea;
+      --pink:   #ec4899;
+      --bg:     #fdf4ff;
+      --card:   #ffffff;
       --border: #e9d5ff;
-      --primary: #9333ea;
-      --primary-fg: #ffffff;
-      --muted: #f3e8ff;
-      --muted-fg: #7e22ce;
-      --foreground: #1e1b2e;
-      --shadow: 0 4px 24px rgba(147,51,234,.12);
+      --fg:     #1e1b2e;
+      --muted:  #6b7280;
+      --error:  #ef4444;
+      --radius: 12px;
     }
 
     body {
@@ -30,19 +46,16 @@
       flex-direction: column;
       align-items: center;
       padding: 32px 16px 48px;
-      gap: 0;
+      gap: 24px;
     }
 
-    /* ── Header ── */
-    .brand {
-      text-align: center;
-      margin-bottom: 28px;
-    }
+    /* ── Brand ── */
+    .brand { text-align: center; }
     .brand-tag {
       display: inline-block;
-      background: var(--muted);
-      color: var(--muted-fg);
-      font-size: .72rem;
+      background: #f3e8ff;
+      color: #7e22ce;
+      font-size: .7rem;
       font-weight: 700;
       letter-spacing: 2.5px;
       text-transform: uppercase;
@@ -52,122 +65,125 @@
       border: 1px solid var(--border);
     }
     .brand h1 {
-      font-size: clamp(1.6rem, 5vw, 2.4rem);
+      font-size: clamp(1.5rem, 5vw, 2.2rem);
       font-weight: 900;
-      color: var(--foreground);
+      color: var(--fg);
       line-height: 1.1;
       letter-spacing: -1px;
     }
     .brand h1 span {
-      background: linear-gradient(90deg, #9333ea, #ec4899);
+      background: linear-gradient(90deg, var(--purple), var(--pink));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
-    .brand p {
-      margin-top: 8px;
-      color: #6b7280;
-      font-size: .9rem;
-    }
+    .brand p { margin-top: 8px; color: var(--muted); font-size: .88rem; }
 
     /* ── Card ── */
     .card {
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: calc(var(--radius) * 2);
-      box-shadow: var(--shadow);
-      padding: 32px 28px 36px;
+      box-shadow: 0 4px 24px rgba(147,51,234,.1);
+      padding: 32px 28px;
+      width: 100%;
+      max-width: 460px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 28px;
+      gap: 24px;
+    }
+
+    /* ── Steps ── */
+    .step { width: 100%; display: none; flex-direction: column; align-items: center; gap: 20px; }
+    .step.active { display: flex; }
+
+    /* ── Form ── */
+    .form-header { text-align: center; }
+    .form-header h2 { font-size: 1.2rem; font-weight: 800; color: var(--fg); }
+    .form-header p  { font-size: .85rem; color: var(--muted); margin-top: 4px; }
+
+    .field { width: 100%; display: flex; flex-direction: column; gap: 6px; }
+    .field label { font-size: .82rem; font-weight: 600; color: var(--fg); }
+
+    .field input {
       width: 100%;
-      max-width: 460px;
-    }
-
-    /* ── Wheel wrapper ── */
-    .wheel-wrap {
-      position: relative;
-      width: 320px;
-      height: 320px;
-      filter: drop-shadow(0 8px 32px rgba(147,51,234,.22));
-    }
-
-    canvas#wheel {
-      border-radius: 50%;
-      display: block;
-    }
-
-    /* pointer */
-    .pointer {
-      position: absolute;
-      top: -18px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 0;
-      height: 0;
-      border-left: 14px solid transparent;
-      border-right: 14px solid transparent;
-      border-top: 30px solid #9333ea;
-      filter: drop-shadow(0 2px 6px rgba(147,51,234,.5));
-      z-index: 10;
-    }
-
-    /* center circle */
-    .center-circle {
-      position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      width: 52px; height: 52px;
-      border-radius: 50%;
+      padding: 11px 14px;
+      border: 1.5px solid #d1d5db;
+      border-radius: var(--radius);
+      font-family: 'Inter', sans-serif;
+      font-size: .95rem;
+      color: var(--fg);
       background: #fff;
-      border: 4px solid #9333ea;
-      box-shadow: 0 0 0 4px rgba(147,51,234,.15);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.4rem;
-      z-index: 10;
+      outline: none;
+      transition: border-color .2s, box-shadow .2s;
     }
+    .field input:focus {
+      border-color: var(--purple);
+      box-shadow: 0 0 0 3px rgba(147,51,234,.12);
+    }
+    .field input.err { border-color: var(--error); }
+    .field .hint { font-size: .75rem; color: var(--error); display: none; }
+    .field.has-err .hint { display: block; }
 
-    /* ── Spin button ── */
-    .btn-spin {
+    /* ── Buttons ── */
+    .btn {
       width: 100%;
-      max-width: 320px;
-      padding: 15px;
+      padding: 13px;
       border: none;
       border-radius: var(--radius);
-      background: linear-gradient(135deg, #9333ea, #ec4899);
+      background: linear-gradient(135deg, var(--purple), var(--pink));
       color: #fff;
       font-family: 'Inter', sans-serif;
-      font-size: 1rem;
+      font-size: .95rem;
       font-weight: 700;
-      letter-spacing: .5px;
       cursor: pointer;
       transition: transform .15s, filter .15s, opacity .15s;
-      box-shadow: 0 4px 18px rgba(147,51,234,.35);
-      position: relative;
-      overflow: hidden;
+      box-shadow: 0 4px 18px rgba(147,51,234,.3);
     }
-    .btn-spin::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: rgba(255,255,255,.12);
-      opacity: 0;
-      transition: opacity .15s;
-    }
-    .btn-spin:hover::after  { opacity: 1; }
-    .btn-spin:active        { transform: scale(.97); }
-    .btn-spin:disabled      { opacity: .55; cursor: not-allowed; }
+    .btn:hover   { filter: brightness(1.08); }
+    .btn:active  { transform: scale(.97); }
+    .btn:disabled { opacity: .5; cursor: not-allowed; }
 
-    /* ── Result modal ── */
+    /* ── Wheel ── */
+    .wheel-wrap {
+      position: relative;
+      width: 300px;
+      height: 300px;
+      filter: drop-shadow(0 8px 28px rgba(147,51,234,.2));
+    }
+    canvas { border-radius: 50%; display: block; }
+    .pointer {
+      position: absolute;
+      top: -16px; left: 50%;
+      transform: translateX(-50%);
+      width: 0; height: 0;
+      border-left: 13px solid transparent;
+      border-right: 13px solid transparent;
+      border-top: 28px solid var(--purple);
+      filter: drop-shadow(0 2px 4px rgba(147,51,234,.5));
+      z-index: 10;
+    }
+    .center-dot {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%,-50%);
+      width: 46px; height: 46px;
+      border-radius: 50%;
+      background: #fff;
+      border: 4px solid var(--purple);
+      box-shadow: 0 0 0 4px rgba(147,51,234,.15);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem;
+      z-index: 10;
+    }
+
+    /* ── Overlay / Modal ── */
     .overlay {
       display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(15,10,30,.55);
-      backdrop-filter: blur(4px);
-      z-index: 50;
+      position: fixed; inset: 0;
+      background: rgba(15,10,30,.6);
+      backdrop-filter: blur(5px);
+      z-index: 100;
       align-items: center;
       justify-content: center;
       padding: 24px;
@@ -179,65 +195,63 @@
       border-radius: calc(var(--radius) * 2);
       border: 1px solid var(--border);
       box-shadow: 0 24px 64px rgba(147,51,234,.25);
-      padding: 40px 32px 36px;
+      padding: 36px 28px 32px;
       text-align: center;
       max-width: 380px;
       width: 100%;
       animation: popIn .35s cubic-bezier(.34,1.56,.64,1);
     }
-
     @keyframes popIn {
       from { transform: scale(.7); opacity: 0; }
       to   { transform: scale(1);  opacity: 1; }
     }
-
-    .modal-icon { font-size: 3.5rem; margin-bottom: 12px; }
-    .modal h2 {
-      font-size: 1.3rem;
-      font-weight: 800;
-      color: var(--foreground);
-      margin-bottom: 6px;
-    }
+    .modal-icon  { font-size: 3rem; margin-bottom: 10px; }
+    .modal h2    { font-size: 1.1rem; font-weight: 700; color: var(--fg); margin-bottom: 4px; }
     .modal-prize {
-      font-size: 1.5rem;
-      font-weight: 900;
-      background: linear-gradient(90deg, #9333ea, #ec4899);
+      font-size: 1.45rem; font-weight: 900; margin: 8px 0 4px;
+      background: linear-gradient(90deg, var(--purple), var(--pink));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      margin-bottom: 20px;
     }
-    .modal p.sub {
-      font-size: .85rem;
-      color: #6b7280;
-      margin-bottom: 28px;
-      line-height: 1.6;
-    }
-    .btn-close {
-      width: 100%;
-      padding: 13px;
-      border: none;
-      border-radius: var(--radius);
-      background: linear-gradient(135deg, #9333ea, #ec4899);
-      color: #fff;
-      font-family: 'Inter', sans-serif;
-      font-size: .95rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: filter .15s;
-    }
-    .btn-close:hover { filter: brightness(1.1); }
+    .modal-name  { font-size: .9rem; color: var(--muted); margin-bottom: 14px; }
+    .modal-sub   { font-size: .82rem; color: var(--muted); line-height: 1.6; margin-bottom: 24px; }
 
-    /* ── Footer ── */
-    .disclaimer {
-      margin-top: 24px;
-      font-size: .75rem;
-      color: #9ca3af;
+    .modal-status {
+      font-size: .8rem; font-weight: 600;
+      padding: 8px 14px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+    }
+    .modal-status.sending { background: #fef9c3; color: #854d0e; }
+    .modal-status.ok      { background: #dcfce7; color: #166534; }
+    .modal-status.fail    { background: #fee2e2; color: #991b1b; }
+
+    .divider {
+      width: 100%; height: 1px;
+      background: var(--border);
+      margin: 4px 0 16px;
+    }
+
+    /* ── Already used ── */
+    .used-msg {
       text-align: center;
       display: flex;
+      flex-direction: column;
       align-items: center;
-      gap: 6px;
+      gap: 12px;
     }
-    .disclaimer span { font-size: .85rem; }
+    .used-msg .icon  { font-size: 3rem; }
+    .used-msg h2     { font-size: 1.1rem; font-weight: 800; color: var(--fg); }
+    .used-msg p      { font-size: .88rem; color: var(--muted); line-height: 1.6; }
+
+    /* ── Disclaimer ── */
+    .disclaimer {
+      font-size: .72rem;
+      color: #9ca3af;
+      text-align: center;
+      max-width: 400px;
+      line-height: 1.5;
+    }
   </style>
 </head>
 <body>
@@ -245,210 +259,298 @@
   <div class="brand">
     <div class="brand-tag">Emagrecentro Araguari</div>
     <h1>Roleta da <span>Sorte</span></h1>
-    <p>Gire e descubra seu prêmio especial!</p>
+    <p>Preencha seus dados e gire para ganhar!</p>
   </div>
 
   <div class="card">
-    <div class="wheel-wrap">
-      <div class="pointer"></div>
-      <canvas id="wheel" width="320" height="320"></canvas>
-      <div class="center-circle">🌸</div>
+
+    <!-- ── STEP 1: Formulário ── -->
+    <div class="step active" id="step-form">
+      <div class="form-header">
+        <h2>Seus dados para participar</h2>
+        <p>Cada pessoa pode girar uma vez. O prêmio chegará no seu contato.</p>
+      </div>
+
+      <div class="field" id="f-nome">
+        <label for="inp-nome">Nome completo</label>
+        <input type="text" id="inp-nome" placeholder="Seu nome" autocomplete="name" />
+        <span class="hint">Por favor informe seu nome completo.</span>
+      </div>
+
+      <div class="field" id="f-email">
+        <label for="inp-email">E-mail</label>
+        <input type="email" id="inp-email" placeholder="seuemail@email.com" autocomplete="email" />
+        <span class="hint">Informe um e-mail válido.</span>
+      </div>
+
+      <div class="field" id="f-tel">
+        <label for="inp-tel">WhatsApp / Telefone</label>
+        <input type="tel" id="inp-tel" placeholder="(34) 9 0000-0000" autocomplete="tel" />
+        <span class="hint">Informe um telefone válido.</span>
+      </div>
+
+      <button class="btn" id="btn-avancar">Girar a Roleta ✨</button>
     </div>
 
-    <button class="btn-spin" id="btnSpin">✨ Girar a Roleta</button>
+    <!-- ── STEP 2: Roleta ── -->
+    <div class="step" id="step-wheel">
+      <div class="wheel-wrap">
+        <div class="pointer"></div>
+        <canvas id="wheel" width="300" height="300"></canvas>
+        <div class="center-dot">🌸</div>
+      </div>
+      <button class="btn" id="btn-spin">✨ Girar agora!</button>
+    </div>
+
+    <!-- ── STEP 3: Já participou ── -->
+    <div class="step" id="step-used">
+      <div class="used-msg">
+        <div class="icon">🔒</div>
+        <h2>Você já participou!</h2>
+        <p>Este e-mail já foi utilizado para girar a roleta.<br>
+           Cada pessoa pode participar apenas uma vez.<br><br>
+           Fale com a gente pelo WhatsApp para mais informações!</p>
+      </div>
+    </div>
+
   </div>
 
   <p class="disclaimer">
-    <span>🎲</span> As rodadas são aleatórias e cada resultado é independente.
+    🎲 As rodadas são aleatórias. Cada participante pode girar apenas uma vez.
+    Os dados informados serão usados exclusivamente pelo Emagrecentro Araguari.
   </p>
 
-  <!-- Modal resultado -->
+  <!-- ── Modal de resultado ── -->
   <div class="overlay" id="overlay">
     <div class="modal">
-      <div class="modal-icon" id="modalIcon"></div>
-      <h2>Parabéns! Você ganhou:</h2>
-      <div class="modal-prize" id="modalPrize"></div>
-      <p class="sub" id="modalSub"></p>
-      <button class="btn-close" id="btnClose">Ótimo, obrigado!</button>
+      <div class="modal-icon" id="m-icon"></div>
+      <h2>Parabéns!</h2>
+      <div class="modal-prize" id="m-prize"></div>
+      <div class="modal-name"  id="m-name"></div>
+      <div class="divider"></div>
+      <p class="modal-sub" id="m-sub"></p>
+      <div class="modal-status sending" id="m-status">⏳ Registrando seu prêmio…</div>
+      <button class="btn" id="btn-fechar" style="display:none">Entendi, obrigado! 🎉</button>
     </div>
   </div>
 
 <script>
-  const SEGMENTS = [
-    {
-      label:  'Procedimento\nEstético',
-      icon:   '💎',
-      color:  '#9333ea',
-      text:   '#fff',
-      prize:  'Procedimento Estético Gratuito',
-      sub:    'Apresente este resultado na recepção para resgatar seu procedimento. Sujeito à disponibilidade.',
-      mIcon:  '💎',
-    },
-    {
-      label:  'Voucher\nR$ 200',
-      icon:   '💵',
-      color:  '#ec4899',
-      text:   '#fff',
-      prize:  'Voucher de R$ 200,00',
-      sub:    'Válido para uso em qualquer serviço do Emagrecentro Araguari. Mostre este resultado na recepção.',
-      mIcon:  '💵',
-    },
-    {
-      label:  'Tente\nNovamente',
-      icon:   '🔄',
-      color:  '#d1d5db',
-      text:   '#374151',
-      prize:  'Tente Novamente',
-      sub:    'Não foi dessa vez! Mas você pode tentar a sorte de novo. Gire mais uma vez!',
-      mIcon:  '🔄',
-    },
-    {
-      label:  'Bioimpedância\nGratuita',
-      icon:   '⚡',
-      color:  '#a855f7',
-      text:   '#fff',
-      prize:  'Avaliação de Bioimpedância',
-      sub:    'Avaliação completa de composição corporal. Agende agora na recepção do Emagrecentro.',
-      mIcon:  '⚡',
-    },
-    {
-      label:  '30% de\nDesconto',
-      icon:   '🏷️',
-      color:  '#f472b6',
-      text:   '#fff',
-      prize:  '30% de Desconto',
-      sub:    'Desconto válido em qualquer pacote de tratamento. Resgate na recepção do Emagrecentro Araguari.',
-      mIcon:  '🏷️',
-    },
-  ];
+/* ══════════════════════════════════
+   PRÊMIOS
+══════════════════════════════════ */
+const SEGMENTS = [
+  { label:'Procedimento\nEstético', icon:'💎', color:'#9333ea', text:'#fff',
+    prize:'Procedimento Estético Gratuito', mIcon:'💎',
+    sub:'Apresente este resultado na recepção do Emagrecentro Araguari para resgatar seu procedimento. Sujeito à disponibilidade de agenda.' },
 
-  const canvas  = document.getElementById('wheel');
-  const ctx     = canvas.getContext('2d');
-  const btnSpin = document.getElementById('btnSpin');
-  const overlay = document.getElementById('overlay');
-  const btnClose= document.getElementById('btnClose');
+  { label:'Voucher\nR$ 200', icon:'💵', color:'#ec4899', text:'#fff',
+    prize:'Voucher de R$ 200,00', mIcon:'💵',
+    sub:'Válido para qualquer serviço do Emagrecentro Araguari. Apresente este resultado na recepção para resgatar.' },
 
-  const N   = SEGMENTS.length;
-  const ARC = (2 * Math.PI) / N;
-  const R   = canvas.width / 2;
+  { label:'Tente\nNovamente', icon:'🔄', color:'#d1d5db', text:'#374151',
+    prize:'Tente Novamente', mIcon:'🔄',
+    sub:'Não foi dessa vez, mas você pode visitar o Emagrecentro Araguari e conhecer nossos tratamentos com condições especiais!' },
 
-  let currentAngle = 0;
-  let spinning     = false;
+  { label:'Bioimpedância\nGratuita', icon:'⚡', color:'#a855f7', text:'#fff',
+    prize:'Avaliação de Bioimpedância Gratuita', mIcon:'⚡',
+    sub:'Avaliação completa de composição corporal sem custo. Agende agora pelo WhatsApp ou direto na recepção.' },
 
-  // ── Draw wheel ──
-  function drawWheel(angle) {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  { label:'30% de\nDesconto', icon:'🏷️', color:'#f472b6', text:'#fff',
+    prize:'30% de Desconto', mIcon:'🏷️',
+    sub:'Desconto válido em qualquer pacote de tratamento do Emagrecentro Araguari. Apresente este resultado na recepção.' },
+];
 
-    SEGMENTS.forEach((seg, i) => {
-      const start = angle + i * ARC;
-      const end   = start + ARC;
+// Pesos (soma = 100) — "Tente Novamente" tem menor chance
+const WEIGHTS = [22, 18, 10, 20, 30];
 
-      // Slice
-      ctx.beginPath();
-      ctx.moveTo(R, R);
-      ctx.arc(R, R, R, start, end);
-      ctx.closePath();
-      ctx.fillStyle = seg.color;
-      ctx.fill();
-      ctx.strokeStyle = 'rgba(255,255,255,.35)';
-      ctx.lineWidth = 2;
-      ctx.stroke();
+/* ══════════════════════════════════
+   CANVAS / RODA
+══════════════════════════════════ */
+const canvas  = document.getElementById('wheel');
+const ctx     = canvas.getContext('2d');
+const N       = SEGMENTS.length;
+const ARC     = (2 * Math.PI) / N;
+const R       = canvas.width / 2;
+let angle     = 0;
+let spinning  = false;
 
-      // Text
-      ctx.save();
-      ctx.translate(R, R);
-      ctx.rotate(start + ARC / 2);
-      ctx.textAlign = 'right';
-      ctx.fillStyle = seg.text;
-
-      // Icon
-      ctx.font = '20px serif';
-      ctx.fillText(seg.icon, R - 14, 6);
-
-      // Label (multi-line)
-      ctx.font = `bold ${N > 6 ? 10 : 11}px Inter, sans-serif`;
-      const lines = seg.label.split('\n');
-      const lineH = 14;
-      const startY = -(lines.length - 1) * lineH / 2 + 18;
-      lines.forEach((line, li) => {
-        ctx.fillText(line, R - 44, startY + li * lineH);
-      });
-
-      ctx.restore();
-    });
-
-    // Outer ring
+function drawWheel(a) {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  SEGMENTS.forEach((seg, i) => {
+    const s = a + i * ARC, e = s + ARC;
     ctx.beginPath();
-    ctx.arc(R, R, R - 1, 0, 2 * Math.PI);
-    ctx.strokeStyle = '#9333ea';
-    ctx.lineWidth = 4;
+    ctx.moveTo(R, R);
+    ctx.arc(R, R, R, s, e);
+    ctx.closePath();
+    ctx.fillStyle = seg.color;
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(255,255,255,.3)';
+    ctx.lineWidth = 2;
     ctx.stroke();
-  }
 
-  drawWheel(currentAngle);
+    ctx.save();
+    ctx.translate(R, R);
+    ctx.rotate(s + ARC / 2);
+    ctx.textAlign = 'right';
+    ctx.fillStyle = seg.text;
 
-  // ── Spin ──
-  function spin() {
-    if (spinning) return;
-    spinning = true;
-    btnSpin.disabled = true;
+    ctx.font = '18px serif';
+    ctx.fillText(seg.icon, R - 12, 6);
 
-    // Weighted: "Tente Novamente" (index 2) has lower chance
-    const weights = [22, 18, 10, 20, 30]; // soma 100
-    const rand = Math.random() * 100;
-    let acc = 0, target = 0;
-    for (let i = 0; i < weights.length; i++) {
-      acc += weights[i];
-      if (rand < acc) { target = i; break; }
-    }
-
-    // Angle to land on target segment (pointer at top = -π/2)
-    const segCenter  = target * ARC + ARC / 2;
-    const pointerPos = -Math.PI / 2; // topo
-    const extraSpins = (5 + Math.floor(Math.random() * 4)) * 2 * Math.PI;
-    const targetAngle = pointerPos - segCenter + extraSpins;
-
-    const duration = 4000 + Math.random() * 1500;
-    const start    = performance.now();
-    const startA   = currentAngle % (2 * Math.PI);
-
-    function ease(t) {
-      // ease out cubic
-      return 1 - Math.pow(1 - t, 3);
-    }
-
-    function animate(now) {
-      const elapsed = now - start;
-      const t       = Math.min(elapsed / duration, 1);
-      currentAngle  = startA + targetAngle * ease(t);
-      drawWheel(currentAngle);
-
-      if (t < 1) {
-        requestAnimationFrame(animate);
-      } else {
-        currentAngle = currentAngle % (2 * Math.PI);
-        spinning = false;
-        showResult(target);
-      }
-    }
-
-    requestAnimationFrame(animate);
-  }
-
-  function showResult(idx) {
-    const seg = SEGMENTS[idx];
-    document.getElementById('modalIcon').textContent  = seg.mIcon;
-    document.getElementById('modalPrize').textContent = seg.prize;
-    document.getElementById('modalSub').textContent   = seg.sub;
-    overlay.classList.add('show');
-  }
-
-  btnSpin.addEventListener('click', spin);
-
-  btnClose.addEventListener('click', () => {
-    overlay.classList.remove('show');
-    btnSpin.disabled = false;
+    ctx.font = 'bold 10px Inter, sans-serif';
+    seg.label.split('\n').forEach((line, li, arr) => {
+      const startY = -(arr.length - 1) * 13 / 2 + 20 + li * 13;
+      ctx.fillText(line, R - 40, startY);
+    });
+    ctx.restore();
   });
+
+  ctx.beginPath();
+  ctx.arc(R, R, R - 1, 0, 2 * Math.PI);
+  ctx.strokeStyle = '#9333ea';
+  ctx.lineWidth = 4;
+  ctx.stroke();
+}
+
+drawWheel(angle);
+
+/* ══════════════════════════════════
+   LÓGICA DE STEPS
+══════════════════════════════════ */
+function showStep(id) {
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+/* ══════════════════════════════════
+   VALIDAÇÃO
+══════════════════════════════════ */
+function validate(nome, email, tel) {
+  let ok = true;
+  const setErr = (id, has) => {
+    const f = document.getElementById(id);
+    f.classList.toggle('has-err', has);
+    f.querySelector('input').classList.toggle('err', has);
+    if (has) ok = false;
+  };
+  setErr('f-nome',  nome.trim().length < 3);
+  setErr('f-email', !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim()));
+  setErr('f-tel',   tel.replace(/\D/g,'').length < 8);
+  return ok;
+}
+
+/* ══════════════════════════════════
+   STEP 1 → STEP 2
+══════════════════════════════════ */
+document.getElementById('btn-avancar').addEventListener('click', () => {
+  const nome  = document.getElementById('inp-nome').value;
+  const email = document.getElementById('inp-email').value.trim().toLowerCase();
+  const tel   = document.getElementById('inp-tel').value;
+
+  if (!validate(nome, email, tel)) return;
+
+  // Verifica se já usou (por e-mail, guardado no localStorage)
+  const used = JSON.parse(localStorage.getItem('emagrecentro_used') || '[]');
+  if (used.includes(email)) {
+    showStep('step-used');
+    return;
+  }
+
+  // Salva dados para usar depois
+  window._userData = { nome, email, tel };
+  showStep('step-wheel');
+});
+
+/* ══════════════════════════════════
+   SPIN
+══════════════════════════════════ */
+document.getElementById('btn-spin').addEventListener('click', () => {
+  if (spinning) return;
+  spinning = true;
+  document.getElementById('btn-spin').disabled = true;
+
+  // Escolhe prêmio com pesos
+  const rand = Math.random() * WEIGHTS.reduce((a,b) => a+b, 0);
+  let acc = 0, target = 0;
+  for (let i = 0; i < WEIGHTS.length; i++) {
+    acc += WEIGHTS[i];
+    if (rand < acc) { target = i; break; }
+  }
+
+  const segCenter  = target * ARC + ARC / 2;
+  const extraSpins = (5 + Math.floor(Math.random() * 4)) * 2 * Math.PI;
+  const targetA    = -Math.PI / 2 - segCenter + extraSpins;
+  const duration   = 4200 + Math.random() * 1400;
+  const startA     = angle % (2 * Math.PI);
+  const startT     = performance.now();
+
+  function ease(t) { return 1 - Math.pow(1 - t, 3); }
+
+  (function animate(now) {
+    const t = Math.min((now - startT) / duration, 1);
+    angle = startA + targetA * ease(t);
+    drawWheel(angle);
+    if (t < 1) requestAnimationFrame(animate);
+    else        showResult(target);
+  })(startT);
+});
+
+/* ══════════════════════════════════
+   RESULTADO + ENVIO
+══════════════════════════════════ */
+function showResult(idx) {
+  const seg  = SEGMENTS[idx];
+  const user = window._userData;
+
+  document.getElementById('m-icon').textContent  = seg.mIcon;
+  document.getElementById('m-prize').textContent = seg.prize;
+  document.getElementById('m-name').textContent  = `para ${user.nome}`;
+  document.getElementById('m-sub').textContent   = seg.sub;
+  document.getElementById('m-status').className  = 'modal-status sending';
+  document.getElementById('m-status').textContent = '⏳ Registrando seu prêmio…';
+  document.getElementById('btn-fechar').style.display = 'none';
+  document.getElementById('overlay').classList.add('show');
+
+  // Marca e-mail como usado
+  const used = JSON.parse(localStorage.getItem('emagrecentro_used') || '[]');
+  if (!used.includes(user.email)) used.push(user.email);
+  localStorage.setItem('emagrecentro_used', JSON.stringify(used));
+
+  // Envia para Formspree
+  fetch(CONFIG.FORMSPREE_URL, {
+    method: 'POST',
+    headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      nome:    user.nome,
+      email:   user.email,
+      telefone: user.tel,
+      premio:  seg.prize,
+      _subject: `🎰 Roleta da Sorte – ${user.nome} ganhou: ${seg.prize}`,
+    }),
+  })
+  .then(r => {
+    const el = document.getElementById('m-status');
+    if (r.ok) {
+      el.className   = 'modal-status ok';
+      el.textContent = '✅ Prêmio registrado! Em breve entraremos em contato.';
+    } else {
+      el.className   = 'modal-status fail';
+      el.textContent = '⚠️ Salvo localmente. Anote seu prêmio e apresente na recepção.';
+    }
+  })
+  .catch(() => {
+    const el = document.getElementById('m-status');
+    el.className   = 'modal-status fail';
+    el.textContent = '⚠️ Sem conexão. Anote seu prêmio e apresente na recepção.';
+  })
+  .finally(() => {
+    document.getElementById('btn-fechar').style.display = 'block';
+  });
+}
+
+document.getElementById('btn-fechar').addEventListener('click', () => {
+  document.getElementById('overlay').classList.remove('show');
+});
 </script>
 </body>
 </html>
