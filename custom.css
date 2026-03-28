@@ -1,365 +1,97 @@
 /* ═══════════════════════════════════════════
-   EMAGRECENTRO ARAGUARI — Redesign Moderno
-   Paleta: Branco + Cinza
+   EMAGRECENTRO ARAGUARI — CSS Adicional WordPress
+   Apenas estilos do tema Astra (header, nav, footer)
+   O layout da home é controlado pelo HTML do Elementor
 ═══════════════════════════════════════════ */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
-:root {
-  --white:      #ffffff;
-  --gray-50:    #f9fafb;
-  --gray-100:   #f3f4f6;
-  --gray-200:   #e5e7eb;
-  --gray-300:   #d1d5db;
-  --gray-400:   #9ca3af;
-  --gray-500:   #6b7280;
-  --gray-700:   #374151;
-  --gray-900:   #111827;
-  --accent:     #374151;
-  --radius:     12px;
-}
-
-/* ── Tipografia global ── */
-*, body, p, h1, h2, h3, h4, h5, h6,
-.entry-content, .page-content {
-  font-family: 'Inter', -apple-system, sans-serif !important;
-  -webkit-font-smoothing: antialiased;
-}
+* { font-family: 'Inter', sans-serif !important; }
 
 body {
-  background: var(--white) !important;
-  color: var(--gray-900) !important;
+  background: #fff !important;
+  color: #111827 !important;
 }
 
-/* ── Navegação ── */
+/* ── Header / Navegação ── */
 .site-header,
-header.site-header,
-#masthead {
-  background: rgba(255,255,255,0.95) !important;
-  backdrop-filter: blur(12px) !important;
-  border-bottom: 1px solid var(--gray-200) !important;
+#masthead,
+.main-header-bar {
+  background: #fff !important;
+  border-bottom: 1px solid #e5e7eb !important;
   box-shadow: none !important;
-  position: sticky !important;
-  top: 0 !important;
-  z-index: 999 !important;
 }
 
-.site-header .site-title a,
-.site-header .site-title,
-.navbar-brand,
-.site-branding a {
-  color: var(--gray-900) !important;
+.main-header-bar {
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+}
+
+.site-title a,
+.site-branding .site-title a {
+  color: #111827 !important;
   font-weight: 800 !important;
-  font-size: 1.2rem !important;
-  letter-spacing: -0.5px !important;
   text-decoration: none !important;
 }
 
 .main-navigation a,
 .nav-menu a,
-.navbar-nav a,
 #site-navigation a {
-  color: var(--gray-500) !important;
+  color: #6b7280 !important;
   font-size: 0.88rem !important;
   font-weight: 500 !important;
-  letter-spacing: 0.5px !important;
-  text-transform: uppercase !important;
   text-decoration: none !important;
-  padding: 8px 14px !important;
-  border-radius: 8px !important;
-  transition: all 0.2s ease !important;
 }
 
 .main-navigation a:hover,
-.nav-menu a:hover,
 #site-navigation a:hover {
-  color: var(--gray-900) !important;
-  background: var(--gray-100) !important;
+  color: #111827 !important;
 }
 
-/* ── Hero / Banner ── */
-.header-hero,
-.hero-section,
-.mesmerize-header,
-[class*="hero"],
-.entry-header,
-.page-header {
-  background: linear-gradient(135deg, var(--gray-900) 0%, var(--gray-700) 100%) !important;
-  padding: 100px 40px !important;
-  text-align: center !important;
-  position: relative !important;
-  overflow: hidden !important;
+/* ── Logo ── */
+.site-branding img {
+  max-height: 70px !important;
+  width: auto !important;
 }
 
-.header-hero::before,
-.mesmerize-header::before {
-  content: '' !important;
-  position: absolute !important;
-  inset: 0 !important;
-  background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.04) 0%, transparent 60%) !important;
+/* ── Ocultar elementos desnecessários ── */
+.home .entry-title,
+.home .page-title,
+.ast-above-header-wrap,
+.ast-below-header-wrap,
+.ast-breadcrumbs-wrapper,
+.ast-archive-description,
+.ast-social-color-type-custom {
+  display: none !important;
 }
 
-.header-hero h1,
-.mesmerize-header h1,
-.page-header h1,
-.entry-title {
-  font-size: clamp(2rem, 5vw, 3.5rem) !important;
-  font-weight: 800 !important;
-  color: var(--white) !important;
-  letter-spacing: -1.5px !important;
-  line-height: 1.1 !important;
-  margin-bottom: 16px !important;
-}
-
-.header-hero p,
-.mesmerize-header p,
-.page-header p {
-  color: var(--gray-400) !important;
-  font-size: 1.1rem !important;
-  font-weight: 400 !important;
-  max-width: 520px !important;
-  margin: 0 auto !important;
-  line-height: 1.7 !important;
-}
-
-/* ── Seções / Conteúdo ── */
-section,
-.section,
-.content-section,
-.wp-block-group,
-.site-main {
-  padding: 80px 0 !important;
-}
-
-.container,
-.wp-block-group__inner-container,
-.site-content .container {
-  max-width: 1100px !important;
-  margin: 0 auto !important;
-  padding: 0 24px !important;
-}
-
-h2 {
-  font-size: clamp(1.6rem, 3vw, 2.4rem) !important;
-  font-weight: 800 !important;
-  color: var(--gray-900) !important;
-  letter-spacing: -1px !important;
-  line-height: 1.2 !important;
-  margin-bottom: 12px !important;
-}
-
-h3 {
-  font-size: 1.2rem !important;
-  font-weight: 700 !important;
-  color: var(--gray-900) !important;
-  margin-bottom: 8px !important;
-}
-
-p {
-  color: var(--gray-500) !important;
-  font-size: 0.95rem !important;
-  line-height: 1.8 !important;
-  font-weight: 400 !important;
-}
-
-/* ── Cards ── */
-.card,
-.service-card,
-.treatment-card,
-.product-card,
-[class*="card"],
-.wp-block-column {
-  background: var(--white) !important;
-  border: 1px solid var(--gray-200) !important;
-  border-radius: var(--radius) !important;
-  padding: 28px !important;
-  box-shadow: none !important;
-  transition: all 0.25s ease !important;
-}
-
-.card:hover,
-[class*="card"]:hover {
-  border-color: var(--gray-300) !important;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.08) !important;
-  transform: translateY(-2px) !important;
-}
-
-/* ── Botões ── */
-.btn,
-.button,
-a.button,
-.wp-block-button__link,
-input[type="submit"],
-button[type="submit"],
-.wpcf7-submit {
-  background: var(--gray-900) !important;
-  color: var(--white) !important;
-  border: none !important;
-  border-radius: 8px !important;
-  padding: 12px 28px !important;
-  font-family: 'Inter', sans-serif !important;
-  font-size: 0.88rem !important;
-  font-weight: 600 !important;
-  letter-spacing: 0.5px !important;
-  text-transform: uppercase !important;
-  cursor: pointer !important;
-  transition: all 0.2s ease !important;
-  text-decoration: none !important;
-  display: inline-block !important;
-  box-shadow: none !important;
-}
-
-.btn:hover,
-.button:hover,
-a.button:hover,
-.wp-block-button__link:hover,
-input[type="submit"]:hover {
-  background: var(--gray-700) !important;
-  transform: translateY(-1px) !important;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.15) !important;
-}
-
-/* Botão outline */
-.btn-outline,
-a.btn-outline {
-  background: transparent !important;
-  color: var(--gray-900) !important;
-  border: 1.5px solid var(--gray-900) !important;
-}
-
-.btn-outline:hover {
-  background: var(--gray-900) !important;
-  color: var(--white) !important;
-}
-
-/* ── Formulários ── */
-input[type="text"],
-input[type="email"],
-input[type="tel"],
-input[type="number"],
-textarea,
-select,
-.wpcf7-text,
-.wpcf7-email,
-.wpcf7-textarea {
+/* ── Widget HTML do Elementor ── */
+.elementor-widget-html {
   width: 100% !important;
-  padding: 12px 16px !important;
-  border: 1.5px solid var(--gray-200) !important;
-  border-radius: 8px !important;
-  font-family: 'Inter', sans-serif !important;
-  font-size: 0.93rem !important;
-  color: var(--gray-900) !important;
-  background: var(--white) !important;
-  outline: none !important;
-  transition: border-color 0.2s !important;
-  box-shadow: none !important;
-}
-
-input:focus,
-textarea:focus,
-select:focus {
-  border-color: var(--gray-400) !important;
-  box-shadow: 0 0 0 3px rgba(55,65,81,0.08) !important;
-}
-
-/* ── Imagens ── */
-img {
-  border-radius: var(--radius) !important;
-  max-width: 100% !important;
-}
-
-/* ── Dividers / separadores ── */
-hr, .separator {
-  border: none !important;
-  border-top: 1px solid var(--gray-200) !important;
-  margin: 40px 0 !important;
-}
-
-/* ── Tags / badges ── */
-.tag, .badge, .label {
-  display: inline-block !important;
-  background: var(--gray-100) !important;
-  color: var(--gray-700) !important;
-  font-size: 0.72rem !important;
-  font-weight: 600 !important;
-  letter-spacing: 1.5px !important;
-  text-transform: uppercase !important;
-  padding: 4px 12px !important;
-  border-radius: 999px !important;
-  border: 1px solid var(--gray-200) !important;
-  margin-bottom: 12px !important;
-}
-
-/* ── Títulos de seção ── */
-.section-title,
-.widget-title,
-.widgettitle {
-  font-size: 0.72rem !important;
-  font-weight: 700 !important;
-  letter-spacing: 2px !important;
-  text-transform: uppercase !important;
-  color: var(--gray-400) !important;
-  margin-bottom: 8px !important;
+  display: block !important;
 }
 
 /* ── Footer ── */
 .site-footer,
-footer.site-footer,
 #colophon {
-  background: var(--gray-900) !important;
-  color: var(--gray-400) !important;
+  background: #111827 !important;
+  color: #9ca3af !important;
   border-top: none !important;
-  padding: 48px 24px !important;
 }
 
 .site-footer a,
 footer a {
-  color: var(--gray-400) !important;
+  color: #9ca3af !important;
   text-decoration: none !important;
-  transition: color 0.2s !important;
 }
 
 .site-footer a:hover,
 footer a:hover {
-  color: var(--white) !important;
+  color: #fff !important;
 }
 
 .site-footer p,
 footer p {
-  color: var(--gray-500) !important;
+  color: #6b7280 !important;
   font-size: 0.85rem !important;
-}
-
-/* ── Fundo alternado ── */
-.bg-gray,
-.section-gray,
-.alt-section {
-  background: var(--gray-50) !important;
-}
-
-/* ── WhatsApp fixo ── */
-.whatsapp-float,
-a[href*="wa.me"],
-a[href*="whatsapp"] {
-  border-radius: 999px !important;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.15) !important;
-}
-
-/* ── Responsivo ── */
-@media (max-width: 768px) {
-  h1 { font-size: 2rem !important; }
-  h2 { font-size: 1.5rem !important; }
-  section { padding: 48px 0 !important; }
-  .header-hero, .mesmerize-header { padding: 64px 24px !important; }
-  [class*="card"] { padding: 20px !important; }
-}
-
-/* ── Animação de entrada suave ── */
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-.card, section h2, .entry-content {
-  animation: fadeUp 0.5s ease both !important;
 }
