@@ -66,7 +66,7 @@
       box-shadow: 0 4px 24px rgba(59,130,246,.08);
       padding: 32px 28px;
       width: 100%;
-      max-width: 460px;
+      max-width: 600px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -127,34 +127,34 @@
     /* ── Wheel ── */
     .wheel-wrap {
       position: relative;
-      width: 300px;
-      height: 300px;
-      filter: drop-shadow(0 8px 24px rgba(59,130,246,.15));
+      width: min(520px, 90vw);
+      height: min(520px, 90vw);
+      filter: drop-shadow(0 10px 32px rgba(59,130,246,.18));
     }
-    canvas { border-radius: 50%; display: block; }
+    canvas { border-radius: 50%; display: block; width: 100%; height: 100%; }
 
     .pointer {
       position: absolute;
-      top: -14px; left: 50%;
+      top: -18px; left: 50%;
       transform: translateX(-50%);
       width: 0; height: 0;
-      border-left: 12px solid transparent;
-      border-right: 12px solid transparent;
-      border-top: 26px solid var(--blue);
-      filter: drop-shadow(0 2px 4px rgba(59,130,246,.4));
+      border-left: 16px solid transparent;
+      border-right: 16px solid transparent;
+      border-top: 34px solid var(--blue);
+      filter: drop-shadow(0 2px 6px rgba(59,130,246,.5));
       z-index: 10;
     }
     .center-dot {
       position: absolute;
       top: 50%; left: 50%;
       transform: translate(-50%,-50%);
-      width: 44px; height: 44px;
+      width: 60px; height: 60px;
       border-radius: 50%;
       background: #fff;
-      border: 4px solid var(--blue);
-      box-shadow: 0 0 0 4px rgba(59,130,246,.12);
+      border: 5px solid var(--blue);
+      box-shadow: 0 0 0 5px rgba(59,130,246,.14);
       display: flex; align-items: center; justify-content: center;
-      font-size: 1.1rem;
+      font-size: 1.5rem;
       z-index: 10;
     }
 
@@ -276,7 +276,7 @@
     <div class="step" id="step-wheel">
       <div class="wheel-wrap">
         <div class="pointer"></div>
-        <canvas id="wheel" width="300" height="300"></canvas>
+        <canvas id="wheel" width="520" height="520"></canvas>
         <div class="center-dot">🎯</div>
       </div>
       <button class="btn" id="btn-spin">✨ Girar agora!</button>
@@ -431,15 +431,15 @@ function drawWheel(a) {
     ctx.fillStyle = seg.text;
 
     // Emoji
-    ctx.font = '16px serif';
-    ctx.fillText(seg.icon, R - 10, 5);
+    ctx.font = '26px serif';
+    ctx.fillText(seg.icon, R - 18, 8);
 
     // Label
-    ctx.font = 'bold 9.5px Inter, sans-serif';
+    ctx.font = 'bold 14px Inter, sans-serif';
     const lines = seg.label.split('\n');
     lines.forEach((line, li) => {
-      const y = -(lines.length - 1) * 12 / 2 + 18 + li * 12;
-      ctx.fillText(line, R - 34, y);
+      const y = -(lines.length - 1) * 18 / 2 + 32 + li * 18;
+      ctx.fillText(line, R - 62, y);
     });
     ctx.restore();
   });
