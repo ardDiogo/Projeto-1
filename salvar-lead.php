@@ -65,7 +65,7 @@ Novo lead da Roleta da Sorte!
 Entre em contato para confirmar o prêmio.
 ";
 
-$headers  = "From: Roleta Emagrecentro <noreply@emagrecentroaraguari.com>\r\n";
+$headers  = "From: Roleta Emagrecentro <noreply@emagrecentroaraguari.com.br>\r\n";
 $headers .= "Reply-To: $email\r\n";
 $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
 
