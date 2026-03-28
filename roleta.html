@@ -9,15 +9,14 @@
   ═══════════════════════════════════════════════════════════
    CONFIGURAÇÃO  ←  edite só este bloco
   ═══════════════════════════════════════════════════════════
-  1. Crie conta gratuita em https://formspree.io
-  2. Crie um Form e copie o endpoint (ex: https://formspree.io/f/xyzabcde)
-  3. Cole abaixo em FORMSPREE_URL
-  4. Coloque o seu e-mail em OWNER_EMAIL (só para exibição no modal)
+  1. Suba o arquivo salvar-lead.php no seu WordPress
+  2. Atualize PHP_URL com o endereço correto
+  3. A SECRET_KEY deve ser igual à do arquivo PHP
   ═══════════════════════════════════════════════════════════ -->
   <script>
     const CONFIG = {
-      FORMSPREE_URL: 'https://formspree.io/f/SEU_ID_AQUI',
-      OWNER_EMAIL:   'seuemail@emagrecentroaraguari.com',
+      PHP_URL:    'https://emagrecentroaraguari.com/salvar-lead.php',
+      SECRET_KEY: 'emagrecentro2025',
     };
   </script>
 
@@ -516,16 +515,16 @@ function showResult(idx) {
   if (!used.includes(user.email)) used.push(user.email);
   localStorage.setItem('emagrecentro_used', JSON.stringify(used));
 
-  // Envia para Formspree
-  fetch(CONFIG.FORMSPREE_URL, {
+  // Envia para o PHP no seu próprio servidor
+  fetch(CONFIG.PHP_URL, {
     method: 'POST',
-    headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      nome:    user.nome,
-      email:   user.email,
-      telefone: user.tel,
-      premio:  seg.prize,
-      _subject: `🎰 Roleta da Sorte – ${user.nome} ganhou: ${seg.prize}`,
+      nome:   user.nome,
+      email:  user.email,
+      tel:    user.tel,
+      premio: seg.prize,
+      key:    CONFIG.SECRET_KEY,
     }),
   })
   .then(r => {
