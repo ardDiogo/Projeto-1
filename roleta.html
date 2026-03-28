@@ -5,13 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Roleta da Sorte – Emagrecentro Araguari</title>
 
-  <script>
-    const CONFIG = {
-      PHP_URL:    'https://www.emagrecentroaraguari.com.br/wp-admin/admin-ajax.php?action=salvar_lead',
-      SECRET_KEY: 'emagrecentro2025',
-    };
-  </script>
-
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
@@ -459,21 +452,19 @@ function drawWheel(a) {
   ctx.stroke();
 }
 
-drawWheel(angle);
-
-/* ══════════════════════════════════
-   VERIFICAÇÃO NA ENTRADA
-══════════════════════════════════ */
-if (hasSpun()) {
-  showStep('step-used');
-}
-
 /* ══════════════════════════════════
    STEPS
 ══════════════════════════════════ */
 function showStep(id) {
   document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
+}
+
+drawWheel(angle);
+
+// Verifica se já girou neste dispositivo
+if (hasSpun()) {
+  showStep('step-used');
 }
 
 /* ══════════════════════════════════
