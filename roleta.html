@@ -310,7 +310,10 @@
       <div class="divider" id="m-divider"></div>
       <p class="modal-sub" id="m-sub"></p>
       <div class="modal-status sending" id="m-status">⏳ Registrando seu prêmio…</div>
-      <button class="btn" id="btn-fechar" style="display:none">Entendi, obrigado! 🎉</button>
+      <a class="btn btn-wpp" id="btn-wpp" href="#" target="_blank" style="display:none; background:#25d366; box-shadow:0 3px 14px rgba(37,211,102,.35); text-decoration:none; text-align:center;">
+        💬 Agendar pelo WhatsApp
+      </a>
+      <button class="btn" id="btn-fechar" style="display:none; background:#f1f5f9; color:#334155; box-shadow:none;">Fechar</button>
     </div>
   </div>
 
@@ -600,6 +603,18 @@ function showResult(idx) {
     el.textContent = '⚠️ Sem conexão. Anote seu prêmio e apresente na recepção.';
   })
   .finally(() => {
+    // Monta link WhatsApp para agendamento
+    const tel   = user.tel.replace(/\D/g, '');
+    const fone  = tel.startsWith('55') ? tel : '55' + tel;
+    const texto = encodeURIComponent(
+      `Oi ${user.nome}, você ganhou um benefício exclusivo 🎁\n` +
+      `*Prêmio:* ${seg.prize}\n\n` +
+      `Gostaria de agendar seu procedimento agora?`
+    );
+    const wppLink = `https://api.whatsapp.com/send?phone=${fone}&text=${texto}`;
+    const btnWpp = document.getElementById('btn-wpp');
+    btnWpp.href = wppLink;
+    btnWpp.style.display = 'block';
     document.getElementById('btn-fechar').style.display = 'block';
   });
 }
