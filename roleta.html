@@ -603,19 +603,19 @@ function showResult(idx) {
     el.textContent = '⚠️ Sem conexão. Anote seu prêmio e apresente na recepção.';
   })
   .finally(() => {
-    // Monta link WhatsApp para agendamento
-    const tel   = user.tel.replace(/\D/g, '');
-    const fone  = tel.startsWith('55') ? tel : '55' + tel;
-    const texto = encodeURIComponent(
-      `Oi ${user.nome}, você ganhou um benefício exclusivo 🎁\n` +
-      `*Prêmio:* ${seg.prize}\n\n` +
-      `Gostaria de agendar seu procedimento agora?`
+    document.getElementById('btn-fechar').style.display = 'block';
+
+    const mensagem = encodeURIComponent(
+      `Oi! Sou ${user.nome} e acabei de ganhar *${seg.prize}* na Roleta da Sorte do Emagrecentro Araguari! 🎁 Gostaria de agendar meu procedimento agora.`
     );
-    const wppLink = `https://api.whatsapp.com/send?phone=${fone}&text=${texto}`;
+    const wppLink = `https://wa.me/553432422756?text=${mensagem}`;
+
     const btnWpp = document.getElementById('btn-wpp');
     btnWpp.href = wppLink;
     btnWpp.style.display = 'block';
-    document.getElementById('btn-fechar').style.display = 'block';
+
+    // Tenta abrir automaticamente (pode ser bloqueado por popup blocker)
+    setTimeout(() => { window.open(wppLink, '_blank'); }, 1500);
   });
 }
 
